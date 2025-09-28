@@ -1,0 +1,106 @@
+# Wytyczne Pisania Kodu - Frontend
+
+**Zasady ogólne:**
+
+- Stosujemy najlepsze praktyki programowania
+- Unikamy komentarzy - kod ma być samodokumentujący się
+- Wybieramy najprostsze rozwiązania
+- Preferujemy czytelność nad "sprytnością"
+- Pakiety instalujemy za pomocą yarn
+- Unikamy deprecated API - używamy aktualnych właściwości i metod
+
+## 1. **Czytelność i Zrozumiałość**
+
+- Kod powinien być samodokumentujący się
+- Używaj opisowych nazw zmiennych, funkcji i komponentów
+- Unikaj skrótów i akronimów, chyba że są powszechnie znane
+- Komentuj tylko złożoną logikę biznesową, gdy jest absolutnie konieczne
+
+## 2. **Konsystencja**
+
+- Trzymaj się ustalonego stylu w całym projekcie
+- Używaj tego samego formatowania (Prettier/ESLint)
+- Zachowaj spójną strukturę plików i folderów
+
+## 3. **Organizacja Plików**
+
+```
+src/
+├── app/                 # Next.js App Router
+├── components/          # Komponenty wielokrotnego użytku
+│   ├── ComponentName/
+│   │   ├── ComponentName.tsx
+│   │   └── index.ts
+├── hooks/              # Custom hooks
+├── utils/              # Funkcje pomocnicze
+├── types/              # Definicje TypeScript
+├── constants/          # Stałe aplikacji
+└── lib/                # Konfiguracja zewnętrznych bibliotek
+```
+
+**Importy:**
+
+- Używaj aliasów `@/` dla importów wewnętrznych
+- `@/types`, `@/components`, `@/utils`, `@/hooks`, `@/constants`, `@/lib`
+- Importy zewnętrzne na górze, wewnętrzne poniżej
+
+## 4. **Nazewnictwo**
+
+- **Komponenty**: PascalCase (`UserProfile`, `ChatMessage`)
+- **Pliki komponentów**: PascalCase (`UserProfile.tsx`)
+- **Foldery komponentów**: PascalCase (`UserProfile/`)
+- **Funkcje i zmienne**: camelCase (`getUserData`, `isLoading`)
+- **Stałe**: UPPER_SNAKE_CASE (`API_BASE_URL`)
+- **Typy**: PascalCase (`User`, `ApiResponse`)
+- **Pliki z typami**: `someName.types.ts` (np. `user.types.ts`, `chat.types.ts`)
+- **Pliki z utils**: `someUtil.utils.ts` (np. `api.utils.ts`, `validation.utils.ts`)
+- **Pliki z hooks**: `useSomeHook.hooks.ts` (np. `useAuth.hooks.ts`)
+
+## 5. **React i Next.js**
+
+- Używaj funkcjonalnych komponentów z hooks
+- Jeden komponent na plik
+- Eksportuj domyślnie komponent, nazwany eksport dla typów
+- Używaj TypeScript types dla props
+- Używaj App Router (nie Pages Router)
+- Server Components domyślnie, Client Components gdy potrzeba
+- Używaj `"use client"` directive tylko gdy konieczne
+- Nie rób przerwy (entera) między dyrektywami typu `"use client"` a importami
+
+## 6. **TypeScript**
+
+- Używaj `type` zamiast `interface`
+- Unikaj `any`, używaj `unknown` gdy nie znasz typu
+- Eksportuj typy z plików `types/`
+- Używaj generics gdy to sensowne
+- Włącz wszystkie strict opcje w `tsconfig.json`
+- Preferuj optional chaining (`?.`)
+
+## 7. **Stylowanie - Chakra UI v2**
+
+- Używaj komponentów Chakra UI zamiast custom CSS
+- Używaj `Box`, `Flex`, `VStack`, `HStack` dla layoutu
+- Używaj `Text`, `Heading` dla typografii
+- Używaj `Button`, `Input` dla formularzy
+- Używaj `useBreakpointValue` dla responsywności
+- Używaj `spacing` prop zamiast `gap` dla VStack/HStack
+
+## 8. **Hooks**
+
+- Custom hooks w folderze `hooks/`
+- Nazwa zaczyna się od `use`
+- Jeden hook na plik
+- Zwracaj obiekt zamiast tablicy gdy masz więcej niż 2 wartości
+
+## 9. **State Management**
+
+- Używaj `useState` dla lokalnego stanu
+- `useContext` dla globalnego stanu (prosty)
+- Unikaj prop drilling
+
+## 10. **API Calls**
+
+- Używaj `fetch` lub `axios`
+- Obsługuj loading, error i success states
+- Używaj custom hooks dla API calls
+- Implementuj retry logic
