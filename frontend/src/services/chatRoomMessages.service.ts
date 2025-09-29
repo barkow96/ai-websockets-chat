@@ -1,0 +1,24 @@
+import { Message } from "@/types";
+
+export const ChatRoomMessagesService = {
+  getChatRoomMessages: async (chatRoomId: string): Promise<Message[]> => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/chatRooms/${chatRoomId}/messages`
+    );
+    return response.json();
+  },
+
+  createChatRoomMessage: async (
+    chatRoomId: string,
+    message: Message
+  ): Promise<Message> => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/chatRooms/${chatRoomId}/messages`,
+      {
+        method: "POST",
+        body: JSON.stringify(message),
+      }
+    );
+    return response.json();
+  },
+} as const;

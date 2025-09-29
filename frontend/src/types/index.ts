@@ -1,2 +1,3 @@
-export * from "./chat.types";
-export * from "./user.types";
+export * from "./chatRooms.type";
+export * from "./messages.type";
+export * from "./users.type";

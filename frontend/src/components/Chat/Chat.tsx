@@ -1,4 +1,5 @@
 "use client";
+import { UsersService } from "@/services";
 import { Message } from "@/types";
 import {
   Box,
@@ -10,7 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   messages: Message[];
@@ -34,6 +35,15 @@ export const Chat = ({ messages, currentUserId, onSendMessage }: Props) => {
       handleSendMessage();
     }
   };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const users = await UsersService.getUsers();
+      console.log(users);
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <Stack>
