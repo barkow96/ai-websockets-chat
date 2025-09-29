@@ -1,9 +1,8 @@
 "use client";
-
+import { Chat } from "@/components";
+import { Message } from "@/types";
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
-import { Chat } from "../components/Chat";
-import type { Message } from "../types/chat.types";
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([

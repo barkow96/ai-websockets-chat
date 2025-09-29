@@ -1,4 +1,5 @@
 "use client";
+import { useSocketIo } from "@/providers";
 import { Message } from "@/types";
 import {
   Box,
@@ -20,6 +21,7 @@ type Props = {
 
 export const Chat = ({ messages, currentUserId, onSendMessage }: Props) => {
   const [messageText, setMessageText] = useState("");
+  const { socket } = useSocketIo();
 
   const handleSendMessage = () => {
     if (messageText.trim()) {

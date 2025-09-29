@@ -4,10 +4,11 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 
 const port = process.env.PORT;
+const clientPort = process.env.CLIENT_PORT;
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, { cors: { origin: `http://localhost:${clientPort}` } });
 
 io.on("connection", (socket) => {
 	console.log("User connected to the socket.io server");
