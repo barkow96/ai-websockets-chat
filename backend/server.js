@@ -1,19 +1,24 @@
 import "dotenv/config";
 import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
-const app = express();
 const port = process.env.PORT;
 
-app.use(express.json());
+const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer);
 
-app.get("/", (req, res) => {
-	res.json({ message: "Hello from Express server!" });
+io.on("connection", (socket) => {
+	console.log("User connected to the socket.io server");
+
+	socket.emit("server-message", { timestamp: new Date().toISOString(), message: "Hello from the server" });
+
+	socket.on("client-message", (message) => {
+		console.log("User message received:", message);
+	});
 });
 
-app.get("/health", (req, res) => {
-	res.json({ status: "OK", timestamp: new Date().toISOString() });
-});
-
-app.listen(port, () => {
+httpServer.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
 });
