@@ -21,11 +21,11 @@ import {
 import { useEffect, useState } from "react";
 
 type Props = {
+  selectedRoom: ChatRoom | null;
   onRoomSelect: (room: ChatRoom) => void;
 };
 
-export const RoomSelector = ({ onRoomSelect }: Props) => {
-  const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
+export const RoomSelector = ({ selectedRoom, onRoomSelect }: Props) => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const [loading, setLoading] = useState(true);
   const [newRoomName, setNewRoomName] = useState("");
@@ -66,11 +66,6 @@ export const RoomSelector = ({ onRoomSelect }: Props) => {
     }
   };
 
-  const handleSelectRoom = (room: ChatRoom) => {
-    setSelectedRoom(room);
-    onRoomSelect(room);
-  };
-
   if (loading) {
     return (
       <Box p={4}>
@@ -99,7 +94,7 @@ export const RoomSelector = ({ onRoomSelect }: Props) => {
             cursor="pointer"
             bg={selectedRoom?.id === room.id ? "blue.50" : "white"}
             _hover={{ bg: "gray.50" }}
-            onClick={() => handleSelectRoom(room)}
+            onClick={() => onRoomSelect(room)}
           >
             <Text fontWeight="bold" fontSize="sm">
               {room.name}

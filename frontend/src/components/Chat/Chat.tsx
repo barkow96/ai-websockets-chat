@@ -1,6 +1,5 @@
 "use client";
 import { useSocketIo } from "@/providers";
-import { UsersService } from "@/services";
 import { ChatRoom, Message, OChatEvent } from "@/types";
 import {
   Box,
@@ -12,24 +11,34 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RoomSelector } from "../RoomSelector";
 
-type Props = {
-  messages: Message[];
-  currentUserId: string;
-  onSendMessage: (text: string) => void;
-};
+const USER_ID = "1";
+const messages: Message[] = [];
 
-export const Chat = ({ messages, currentUserId, onSendMessage }: Props) => {
+export const Chat = () => {
+  const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
   const [messageText, setMessageText] = useState("");
+
   const { socket } = useSocketIo();
 
   const handleSendMessage = () => {
-    if (messageText.trim()) {
-      onSendMessage(messageText.trim());
-      setMessageText("");
+    if (
+      messageText.trim().length === 0 ||
+      !selectedRoom ||
+      selectedRoom?.id.length === 0
+    ) {
+      return;
     }
+
+    socket?.emit(OChatEvent.MessageNew, {
+      chatRoomId: selectedRoom.id,
+      message: messageText.trim(),
+      senderId: USER_ID,
+      timestamp: new Date(),
+    });
+    setMessageText("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -39,28 +48,22 @@ export const Chat = ({ messages, currentUserId, onSendMessage }: Props) => {
     }
   };
 
-  const fetchUsers = async () => {
-    const users = await UsersService.getUsers();
-    console.log("Users:", users);
-  };
-
   const handleRoomSelect = (room: ChatRoom) => {
-    console.log("Room selected:", room);
     socket?.emit(OChatEvent.Watch, { chatRoomId: room.id });
+    setSelectedRoom(room);
   };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   return (
     <Stack>
-      <RoomSelector onRoomSelect={handleRoomSelect} />
+      <RoomSelector
+        selectedRoom={selectedRoom}
+        onRoomSelect={handleRoomSelect}
+      />
 
       <Box flex="1" overflowY="auto" p={4}>
         <VStack spacing={3} align="stretch">
           {messages.map(message => {
-            const isCurrentUser = message.senderId === currentUserId;
+            const isCurrentUser = message.senderId === USER_ID;
             return (
               <Flex
                 key={message.id}

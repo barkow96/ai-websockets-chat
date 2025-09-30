@@ -27,7 +27,7 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on(OChatEvent.MessageNew, (data: ChatMessageEventsData) => {
-		console.log("User send message to the chat room");
+		console.log("User send message to the chat room, data:", data);
 		socket.broadcast.to("chat-" + data.chatRoomId).emit(OChatEvent.MessageNew, data);
 	});
 });
