@@ -1,6 +1,7 @@
 "use client";
-import { ChatRoomsService, UsersService } from "@/services";
-import { Message } from "@/types";
+import { useSocketIo } from "@/providers";
+import { UsersService } from "@/services";
+import { ChatRoom, Message, OChatEvent } from "@/types";
 import {
   Box,
   Button,
@@ -22,6 +23,7 @@ type Props = {
 
 export const Chat = ({ messages, currentUserId, onSendMessage }: Props) => {
   const [messageText, setMessageText] = useState("");
+  const { socket } = useSocketIo();
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
@@ -42,19 +44,18 @@ export const Chat = ({ messages, currentUserId, onSendMessage }: Props) => {
     console.log("Users:", users);
   };
 
-  const fetchChatRooms = async () => {
-    const chatRooms = await ChatRoomsService.getChatRooms();
-    console.log("Chat rooms:", chatRooms);
+  const handleRoomSelect = (room: ChatRoom) => {
+    console.log("Room selected:", room);
+    socket?.emit(OChatEvent.Watch, { chatRoomId: room.id });
   };
 
   useEffect(() => {
     fetchUsers();
-    fetchChatRooms();
   }, []);
 
   return (
     <Stack>
-      <RoomSelector onRoomSelect={() => {}} />
+      <RoomSelector onRoomSelect={handleRoomSelect} />
 
       <Box flex="1" overflowY="auto" p={4}>
         <VStack spacing={3} align="stretch">
