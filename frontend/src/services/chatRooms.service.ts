@@ -20,6 +20,9 @@ export const ChatRoomsService = {
       `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms`,
       {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(chatRoom),
       }
     );
