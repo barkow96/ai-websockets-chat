@@ -1,5 +1,5 @@
 "use client";
-import { UsersService } from "@/services";
+import { ChatRoomsService, UsersService } from "@/services";
 import { Message } from "@/types";
 import {
   Box,
@@ -12,6 +12,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { RoomSelector } from "../RoomSelector";
 
 type Props = {
   messages: Message[];
@@ -36,17 +37,25 @@ export const Chat = ({ messages, currentUserId, onSendMessage }: Props) => {
     }
   };
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const users = await UsersService.getUsers();
-      console.log(users);
-    };
+  const fetchUsers = async () => {
+    const users = await UsersService.getUsers();
+    console.log("Users:", users);
+  };
 
+  const fetchChatRooms = async () => {
+    const chatRooms = await ChatRoomsService.getChatRooms();
+    console.log("Chat rooms:", chatRooms);
+  };
+
+  useEffect(() => {
     fetchUsers();
+    fetchChatRooms();
   }, []);
 
   return (
     <Stack>
+      <RoomSelector onRoomSelect={() => {}} />
+
       <Box flex="1" overflowY="auto" p={4}>
         <VStack spacing={3} align="stretch">
           {messages.map(message => {
