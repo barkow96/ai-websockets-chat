@@ -2,16 +2,19 @@
 	{
 		"id": "1",
 		"name": "General",
-		"description": "General discussion"
+		"description": "General discussion",
+		"userIds": ["1", "2", "3"]
 	},
 	{
 		"id": "2",
 		"name": "Tech Talk",
-		"description": "Technology discussions"
+		"description": "Technology discussions",
+		"userIds": ["1", "2"]
 	},
 	{
 		"id": "3",
 		"name": "Random",
-		"description": "Random chat"
+		"description": "Random chat",
+		"userIds": ["2", "3"]
 	}
 ]

@@ -1,10 +1,10 @@
-import { User } from "../types/users";
+import { UserDto, UserEntity } from "../types/users";
 import { DatabaseService } from "./DatabaseService";
 
-const usersService = new DatabaseService<User>("users.json", "users");
+const usersService = new DatabaseService<UserEntity>("users.json", "users");
 
-export const getAllUsers = () => usersService.getAll();
-export const getUserById = (id: string) => usersService.getById(id);
-export const createUser = (user: Omit<User, "id">) => usersService.create(user);
-export const updateUser = (id: string, updates: Partial<Omit<User, "id">>) => usersService.update(id, updates);
-export const deleteUser = (id: string) => usersService.delete(id);
+export const getAllUsers = (): UserDto[] => usersService.getAll();
+export const getUserById = (id: string): UserDto | undefined => usersService.getById(id);
+export const createUser = (user: Omit<UserEntity, "id">) => usersService.create(user);
+export const updateUser = (id: string, updates: Partial<Omit<UserEntity, "id">>): UserDto | null => usersService.update(id, updates);
+export const deleteUser = (id: string): boolean => usersService.delete(id);
