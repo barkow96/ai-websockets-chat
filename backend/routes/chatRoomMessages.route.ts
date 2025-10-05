@@ -22,6 +22,7 @@ router.post("/:chatRoomId/messages", (req, res) => {
 		chatRoomId: `${chatRoomId}`,
 		text: `${text}`,
 		senderId: `${senderId}`,
+		timestamp: new Date(),
 	});
 
 	res.status(201).json(newMessage);

@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllChatRooms, getChatRoomById, createChatRoom, updateChatRoom, deleteChatRoom } from "../database";
+import { createChatRoom, deleteChatRoom, getAllChatRooms, getChatRoomById, updateChatRoom } from "../database";
 
 const router = express.Router();
 
