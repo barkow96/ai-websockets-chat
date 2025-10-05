@@ -15,7 +15,9 @@ export const ChatRoomsService = {
     return response.json();
   },
 
-  createChatRoom: async (chatRoom: Omit<ChatRoom, "id">): Promise<ChatRoom> => {
+  createChatRoom: async (
+    chatRoom: Omit<ChatRoom, "id" | "users">
+  ): Promise<ChatRoom> => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms`,
       {

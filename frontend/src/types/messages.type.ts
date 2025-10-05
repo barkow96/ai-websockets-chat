@@ -3,5 +3,6 @@ export type Message = {
   chatRoomId: string;
   text: string;
   senderId: string;
+  senderName: string;
   timestamp: Date;
 };

@@ -1,20 +1,45 @@
 [
-	{
-		"id": "1",
-		"name": "General",
-		"description": "General discussion",
-		"userIds": ["1", "2", "3"]
-	},
-	{
-		"id": "2",
-		"name": "Tech Talk",
-		"description": "Technology discussions",
-		"userIds": ["1", "2"]
-	},
-	{
-		"id": "3",
-		"name": "Random",
-		"description": "Random chat",
-		"userIds": ["2", "3"]
-	}
+  {
+    "id": "1",
+    "name": "General",
+    "description": "General discussion",
+    "userIds": [
+      "1",
+      "2",
+      "3"
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Tech Talk",
+    "description": "Technology discussions",
+    "userIds": [
+      "1",
+      "2"
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Random",
+    "description": "Random chat",
+    "userIds": [
+      "2",
+      "3"
+    ]
+  },
+  {
+    "name": "Nowy pokój",
+    "description": "Opis 1000 Opis 1000",
+    "id": "1759695025708"
+  },
+  {
+    "name": "Nowy pokój",
+    "description": "Opis 1000 Opis 1000",
+    "id": "1759695032930"
+  },
+  {
+    "name": "Nowy pokój",
+    "description": "Opis 1000 Opis 1000",
+    "id": "1759695033766"
+  }
 ]
