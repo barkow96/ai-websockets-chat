@@ -36,8 +36,8 @@ export const getChatRoomById = (id: string): ChatRoomDto | undefined => {
 	return chatRoom ? enrichChatRoomWithUsers(chatRoom) : undefined;
 };
 
-export const createChatRoom = (chatRoom: Omit<ChatRoomEntity, "id">): ChatRoomDto => {
-	const newChatRoom = chatRoomsService.create(chatRoom);
+export const createChatRoom = (chatRoom: Omit<ChatRoomEntity, "id" | "userIds">): ChatRoomDto => {
+	const newChatRoom = chatRoomsService.create({ ...chatRoom, userIds: [] });
 	return enrichChatRoomWithUsers(newChatRoom);
 };
 
