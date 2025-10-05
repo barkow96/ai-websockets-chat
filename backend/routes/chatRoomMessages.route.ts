@@ -1,11 +1,11 @@
 import express from "express";
-import { dbMessages } from "../database";
+import { getMessagesByChatRoomId, createMessage, deleteMessage, updateMessage } from "../database";
 
 const router = express.Router();
 
 router.get("/:chatRoomId/messages", (req, res) => {
 	const { chatRoomId } = req.params;
-	const roomMessages = dbMessages.filter((m) => m.chatRoomId === chatRoomId);
+	const roomMessages = getMessagesByChatRoomId(chatRoomId);
 
 	res.json(roomMessages);
 });
@@ -18,27 +18,40 @@ router.post("/:chatRoomId/messages", (req, res) => {
 		return res.status(400).json({ error: "Text and senderId are required" });
 	}
 
-	const newMessage = {
-		id: Date.now().toString(),
+	const newMessage = createMessage({
 		chatRoomId: `${chatRoomId}`,
 		text: `${text}`,
 		senderId: `${senderId}`,
-		timestamp: new Date(),
-	};
+	});
 
-	dbMessages.push(newMessage);
 	res.status(201).json(newMessage);
+});
+
+router.put("/:chatRoomId/messages/:messageId", (req, res) => {
+	const { messageId } = req.params;
+	const { text } = req.body;
+
+	if (!text) {
+		return res.status(400).json({ error: "Text is required" });
+	}
+
+	const updatedMessage = updateMessage(messageId, { text });
+
+	if (!updatedMessage) {
+		return res.status(404).json({ error: "Message not found" });
+	}
+
+	res.json(updatedMessage);
 });
 
 router.delete("/:chatRoomId/messages/:messageId", (req, res) => {
 	const { messageId } = req.params;
-	const messageIndex = dbMessages.findIndex((m) => m.id === messageId);
+	const deleted = deleteMessage(messageId);
 
-	if (messageIndex === -1) {
+	if (!deleted) {
 		return res.status(404).json({ error: "Message not found" });
 	}
 
-	dbMessages.splice(messageIndex, 1);
 	res.status(204).send();
 });
 

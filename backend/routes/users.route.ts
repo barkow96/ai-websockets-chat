@@ -1,14 +1,14 @@
 import express from "express";
-import { dbUsers } from "../database";
+import { getAllUsers, getUserById, createUser, updateUser, deleteUser } from "../database";
 
 const router = express.Router();
 
 router.get("/", (req, res) => {
-	res.json(dbUsers);
+	res.json(getAllUsers());
 });
 
 router.get("/:id", (req, res) => {
-	const user = dbUsers.find((u) => u.id === req.params.id);
+	const user = getUserById(req.params.id);
 	if (!user) {
 		return res.status(404).json({ error: "User not found" });
 	}
@@ -22,13 +22,11 @@ router.post("/", (req, res) => {
 		return res.status(400).json({ error: "Name is required" });
 	}
 
-	const newUser = {
-		id: (dbUsers.length + 1).toString(),
+	const newUser = createUser({
 		name: `${name}`,
 		avatar: `${avatar}`,
-	};
+	});
 
-	dbUsers.push(newUser);
 	res.status(201).json(newUser);
 });
 
@@ -36,16 +34,24 @@ router.put("/:id", (req, res) => {
 	const { id } = req.params;
 	const { name, avatar } = req.body;
 
-	const userIndex = dbUsers.findIndex((u) => u.id === id);
+	const updatedUser = updateUser(id, { name, avatar });
 
-	if (userIndex === -1) {
+	if (!updatedUser) {
 		return res.status(404).json({ error: "User not found" });
 	}
 
-	if (name) dbUsers[userIndex].name = name;
-	if (avatar) dbUsers[userIndex].avatar = avatar;
+	res.json(updatedUser);
+});
 
-	res.json(dbUsers[userIndex]);
+router.delete("/:id", (req, res) => {
+	const { id } = req.params;
+	const deleted = deleteUser(id);
+
+	if (!deleted) {
+		return res.status(404).json({ error: "User not found" });
+	}
+
+	res.status(204).send();
 });
 
 export default router;

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "name": "General",
+    "description": "General discussion"
+  },
+  {
+    "id": "2",
+    "name": "Tech Talk",
+    "description": "Technology discussions"
+  },
+  {
+    "id": "3",
+    "name": "Random",
+    "description": "Random chat"
+  },
+  {
+    "name": "ABCDEF",
+    "description": "ADSADSA",
+    "id": "1759691651020"
+  }
+]
