@@ -1,16 +1,11 @@
 import { readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-
-type User = {
-	id: string;
-	name: string;
-	avatar: string;
-};
+import { User } from "../types/users";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const DATA_DIR = join(__dirname, "data");
+const DATA_DIR = join(__dirname, "..", "data");
 const USERS_FILE = join(DATA_DIR, "users.json");
 
 const readUsersFromFile = (): User[] => {

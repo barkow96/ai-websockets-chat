@@ -1,18 +1,11 @@
 import { readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-
-type Message = {
-	id: string;
-	chatRoomId: string;
-	text: string;
-	senderId: string;
-	timestamp: Date;
-};
+import { Message } from "../types/messages";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const DATA_DIR = join(__dirname, "data");
+const DATA_DIR = join(__dirname, "..", "data");
 const MESSAGES_FILE = join(DATA_DIR, "messages.json");
 
 const readMessagesFromFile = (): Message[] => {

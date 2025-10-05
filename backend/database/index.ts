@@ -1,3 +1,3 @@
-export * from "./chatRooms";
-export * from "./messages";
-export * from "./users";
+export * from "./operations/chatRooms";
+export * from "./operations/messages";
+export * from "./operations/users";
