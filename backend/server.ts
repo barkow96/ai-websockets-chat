@@ -5,6 +5,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { ChatMessageEventsData, ChatWatchEventsData, OChatEvent } from "./chatEvent.type.ts";
+import { createMessage } from "./database/index.ts";
 import { chatRoomMessagesRouter, chatRoomsRouter, usersRouter } from "./routes";
 
 const port = process.env.PORT;
@@ -18,17 +19,27 @@ const io = new Server(httpServer, { cors: { origin: clientUrl } });
 io.on("connection", (socket) => {
 	socket.on(OChatEvent.Watch, ({ chatRoomId }: ChatWatchEventsData) => {
 		console.log("User joined chat room");
+
 		socket.join("chat-" + chatRoomId);
 	});
 
 	socket.on(OChatEvent.Unwatch, ({ chatRoomId }: ChatWatchEventsData) => {
 		console.log("User left chat room");
+
 		socket.leave("chat-" + chatRoomId);
 	});
 
 	socket.on(OChatEvent.MessageNew, (data: ChatMessageEventsData) => {
 		console.log("User send message to the chat room, data:", data);
+
 		socket.broadcast.to("chat-" + data.chatRoomId).emit(OChatEvent.MessageNew, data);
+
+		createMessage({
+			chatRoomId: data.chatRoomId,
+			text: data.message,
+			senderId: data.senderId,
+			timestamp: new Date(),
+		});
 	});
 });
 

@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "chatRoomId": "2",
+    "text": "Moja wiadomość :)",
+    "senderId": "1",
+    "timestamp": "2025-10-05T19:43:28.066Z",
+    "id": "1759693408066"
+  },
+  {
+    "chatRoomId": "1",
+    "text": "ABCDEF",
+    "senderId": "1",
+    "timestamp": "2025-10-05T19:48:13.013Z",
+    "id": "1759693693013"
+  },
+  {
+    "chatRoomId": "1",
+    "text": "ewqewq",
+    "senderId": "1",
+    "timestamp": "2025-10-05T19:48:16.533Z",
+    "id": "1759693696533"
+  }
+]
