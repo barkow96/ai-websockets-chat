@@ -2,8 +2,12 @@ import { Message } from "@/types";
 
 export const ChatRoomMessagesService = {
   getChatRoomMessages: async (chatRoomId: string): Promise<Message[]> => {
+    console.log(
+      "GET messages - url:",
+      `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms/${chatRoomId}/messages`
+    );
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/chatRooms/${chatRoomId}/messages`
+      `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms/${chatRoomId}/messages`
     );
     return response.json();
   },
@@ -13,7 +17,7 @@ export const ChatRoomMessagesService = {
     message: Message
   ): Promise<Message> => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/chatRooms/${chatRoomId}/messages`,
+      `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms/${chatRoomId}/messages`,
       {
         method: "POST",
         headers: {

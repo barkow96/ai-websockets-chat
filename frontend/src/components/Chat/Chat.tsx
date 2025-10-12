@@ -1,5 +1,6 @@
 "use client";
 import { useSocketIo } from "@/providers";
+import { ChatRoomMessagesService } from "@/services";
 import { ChatRoom, Message, OChatEvent } from "@/types";
 import {
   Box,
@@ -15,10 +16,12 @@ import { useState } from "react";
 import { RoomSelector } from "../RoomSelector";
 
 const USER_ID = "1";
-const messages: Message[] = [];
 
 export const Chat = () => {
   const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
+  const [selectedRoomMessages, setSelectedRoomMessages] = useState<Message[]>(
+    []
+  );
   const [messageText, setMessageText] = useState("");
 
   const { socket } = useSocketIo();
@@ -48,9 +51,12 @@ export const Chat = () => {
     }
   };
 
-  const handleRoomSelect = (room: ChatRoom) => {
+  const handleRoomSelect = async (room: ChatRoom) => {
     socket?.emit(OChatEvent.Watch, { chatRoomId: room.id });
     setSelectedRoom(room);
+
+    const messages = await ChatRoomMessagesService.getChatRoomMessages(room.id);
+    setSelectedRoomMessages(messages);
   };
 
   return (
@@ -62,7 +68,7 @@ export const Chat = () => {
 
       <Box flex="1" overflowY="auto" p={4}>
         <VStack spacing={3} align="stretch">
-          {messages.map(message => {
+          {selectedRoomMessages.map(message => {
             const isCurrentUser = message.senderId === USER_ID;
             return (
               <Flex

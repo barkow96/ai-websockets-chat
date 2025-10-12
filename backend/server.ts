@@ -48,7 +48,7 @@ app.use(bodyParser.json());
 app.use(cors({ origin: [client1Url, client2Url, client3Url] }));
 
 app.use("/chat-rooms", chatRoomsRouter);
-app.use("/chat-rooms/:chatRoomId", chatRoomMessagesRouter);
+app.use("/chat-rooms", chatRoomMessagesRouter);
 app.use("/users", usersRouter);
 
 httpServer.listen(port, () => {
