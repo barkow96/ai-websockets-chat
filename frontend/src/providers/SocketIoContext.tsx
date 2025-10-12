@@ -16,7 +16,7 @@ export const SocketIoProvider = ({ children }: PropsWithChildren) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3001");
+    const newSocket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
     setSocket(newSocket);
 
     newSocket.emit("client-message", "Hello from the client");

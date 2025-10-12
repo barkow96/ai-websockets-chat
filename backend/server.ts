@@ -9,12 +9,13 @@ import { createMessage } from "./database/index.ts";
 import { chatRoomMessagesRouter, chatRoomsRouter, usersRouter } from "./routes";
 
 const port = process.env.PORT;
-const clientPort = process.env.CLIENT_PORT;
-const clientUrl = `http://localhost:${clientPort}`;
+const client1Url = `http://localhost:${process.env.CLIENT_1_PORT}`;
+const client2Url = `http://localhost:${process.env.CLIENT_2_PORT}`;
+const client3Url = `http://localhost:${process.env.CLIENT_3_PORT}`;
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, { cors: { origin: clientUrl } });
+const io = new Server(httpServer, { cors: { origin: [client1Url, client2Url, client3Url] } });
 
 io.on("connection", (socket) => {
 	socket.on(OChatEvent.Watch, ({ chatRoomId }: ChatWatchEventsData) => {
@@ -32,7 +33,7 @@ io.on("connection", (socket) => {
 	socket.on(OChatEvent.MessageNew, (data: ChatMessageEventsData) => {
 		console.log("User send message to the chat room, data:", data);
 
-		socket.broadcast.to("chat-" + data.chatRoomId).emit(OChatEvent.MessageNew, data);
+		io.to("chat-" + data.chatRoomId).emit(OChatEvent.MessageNew, data);
 
 		createMessage({
 			chatRoomId: data.chatRoomId,
@@ -44,7 +45,7 @@ io.on("connection", (socket) => {
 });
 
 app.use(bodyParser.json());
-app.use(cors({ origin: clientUrl }));
+app.use(cors({ origin: [client1Url, client2Url, client3Url] }));
 
 app.use("/chat-rooms", chatRoomsRouter);
 app.use("/chat-rooms/:chatRoomId", chatRoomMessagesRouter);
