@@ -18,35 +18,20 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Props = {
+  rooms: ChatRoom[];
   selectedRoom: ChatRoom | null;
   onRoomSelect: (room: ChatRoom) => void;
 };
 
-export const RoomSelector = ({ selectedRoom, onRoomSelect }: Props) => {
-  const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [newRoomName, setNewRoomName] = useState("");
-  const [newRoomDescription, setNewRoomDescription] = useState("");
+export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    loadChatRooms();
-  }, []);
-
-  const loadChatRooms = async () => {
-    try {
-      setLoading(true);
-      const rooms = await ChatRoomsService.getChatRooms();
-      setChatRooms(rooms);
-    } catch (error) {
-      console.error("Failed to load chat rooms:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [chatRooms, setChatRooms] = useState<ChatRoom[]>(rooms);
+  const [newRoomName, setNewRoomName] = useState("");
+  const [newRoomDescription, setNewRoomDescription] = useState("");
 
   const handleCreateRoom = async () => {
     if (!newRoomName.trim()) return;
@@ -65,14 +50,6 @@ export const RoomSelector = ({ selectedRoom, onRoomSelect }: Props) => {
       console.error("Failed to create chat room:", error);
     }
   };
-
-  if (loading) {
-    return (
-      <Box p={4}>
-        <Text>Ładowanie pokoi...</Text>
-      </Box>
-    );
-  }
 
   return (
     <Box p={4} borderRight="1px" borderColor="gray.200" minW="300px">

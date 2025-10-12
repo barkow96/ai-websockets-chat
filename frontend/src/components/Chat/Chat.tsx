@@ -1,7 +1,6 @@
 "use client";
 import { useSocketIo } from "@/providers";
-import { ChatRoomMessagesService } from "@/services";
-import { ChatRoom, Message, OChatEvent } from "@/types";
+import { ChatRoom, Message, OChatEvent, User } from "@/types";
 import {
   Box,
   Button,
@@ -13,15 +12,14 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { RoomSelector } from "../RoomSelector";
 
-const USER_ID = "1";
+type Props = {
+  messages: Message[];
+  selectedUser: User | null;
+  selectedRoom: ChatRoom | null;
+};
 
-export const Chat = () => {
-  const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
-  const [selectedRoomMessages, setSelectedRoomMessages] = useState<Message[]>(
-    []
-  );
+export const Chat = ({ messages, selectedUser, selectedRoom }: Props) => {
   const [messageText, setMessageText] = useState("");
 
   const { socket } = useSocketIo();
@@ -38,7 +36,7 @@ export const Chat = () => {
     socket?.emit(OChatEvent.MessageNew, {
       chatRoomId: selectedRoom.id,
       message: messageText.trim(),
-      senderId: USER_ID,
+      senderId: selectedUser?.id || "",
       timestamp: new Date(),
     });
     setMessageText("");
@@ -51,25 +49,12 @@ export const Chat = () => {
     }
   };
 
-  const handleRoomSelect = async (room: ChatRoom) => {
-    socket?.emit(OChatEvent.Watch, { chatRoomId: room.id });
-    setSelectedRoom(room);
-
-    const messages = await ChatRoomMessagesService.getChatRoomMessages(room.id);
-    setSelectedRoomMessages(messages);
-  };
-
   return (
     <Stack>
-      <RoomSelector
-        selectedRoom={selectedRoom}
-        onRoomSelect={handleRoomSelect}
-      />
-
       <Box flex="1" overflowY="auto" p={4}>
         <VStack spacing={3} align="stretch">
-          {selectedRoomMessages.map(message => {
-            const isCurrentUser = message.senderId === USER_ID;
+          {messages.map(message => {
+            const isCurrentUser = message.senderId === selectedUser?.id;
             return (
               <Flex
                 key={message.id}
