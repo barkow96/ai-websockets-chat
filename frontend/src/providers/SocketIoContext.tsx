@@ -1,3 +1,4 @@
+import { ChatMessageEventsData, OChatEvent } from "@/types";
 import {
   createContext,
   PropsWithChildren,
@@ -19,6 +20,10 @@ export const SocketIoProvider = ({ children }: PropsWithChildren) => {
     setSocket(newSocket);
 
     newSocket.emit("client-message", "Hello from the client");
+
+    newSocket.on(OChatEvent.MessageNew, (data: ChatMessageEventsData) => {
+      console.log("Received new message on frontend!", data);
+    });
 
     return () => {
       newSocket.close();
