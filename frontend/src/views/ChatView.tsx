@@ -34,7 +34,7 @@ export function ChatView({ users, chatRooms }: Props) {
   );
 
   return (
-    <VStack spacing={0} align="stretch">
+    <VStack gap={0} align="stretch">
       <Users
         users={users}
         selectedUser={selectedUser}

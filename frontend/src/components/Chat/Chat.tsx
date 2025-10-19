@@ -93,7 +93,7 @@ export const Chat = ({
   return (
     <Stack>
       <Box flex="1" overflowY="auto" p={4}>
-        <VStack spacing={3} align="stretch">
+        <VStack gap={3} align="stretch">
           {messages.map(message => {
             const isCurrentUser = message.senderId === selectedUser?.id;
             return (
@@ -126,7 +126,7 @@ export const Chat = ({
       </Box>
 
       <Box p={4} borderTop="1px" borderColor="gray.200">
-        <HStack spacing={2}>
+        <HStack gap={2}>
           <Input
             value={messageText}
             onChange={e => setMessageText(e.target.value)}
@@ -137,7 +137,7 @@ export const Chat = ({
           <Button
             onClick={handleSendMessage}
             colorScheme="blue"
-            isDisabled={!messageText.trim()}
+            disabled={!messageText.trim()}
           >
             Wyślij
           </Button>

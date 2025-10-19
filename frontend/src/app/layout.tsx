@@ -1,6 +1,7 @@
+import { Box } from "@chakra-ui/react";
 import type { Metadata } from "next";
-import { Providers } from "./providers";
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Websockets Chat App",
@@ -15,7 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Box width="100%" maxWidth="1200px" margin="0 auto">
+            {children}
+          </Box>
+        </Providers>
       </body>
     </html>
   );

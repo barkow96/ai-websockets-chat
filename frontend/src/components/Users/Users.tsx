@@ -1,7 +1,6 @@
 "use client";
 import { User } from "@/types";
 import {
-  Avatar,
   Box,
   Button,
   Flex,
@@ -20,7 +19,7 @@ type Props = {
 export const Users = ({ users, selectedUser, onUserSelect }: Props) => {
   return (
     <Box p={4} borderBottom="1px" borderColor="gray.200">
-      <VStack spacing={4} align="stretch">
+      <VStack gap={4} align="stretch">
         <Heading size="md" textAlign="center">
           Wybierz użytkownika
         </Heading>
@@ -37,7 +36,20 @@ export const Users = ({ users, selectedUser, onUserSelect }: Props) => {
               minH="80px"
             >
               <Flex direction="column" align="center" gap={2}>
-                <Avatar src={user.avatar} name={user.name} size="md" />
+                <Box
+                  w="48px"
+                  h="48px"
+                  borderRadius="full"
+                  bg="blue.500"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  color="white"
+                  fontSize="lg"
+                  fontWeight="bold"
+                >
+                  {user.name.charAt(0).toUpperCase()}
+                </Box>
                 <Text fontSize="sm" fontWeight="medium">
                   {user.name}
                 </Text>

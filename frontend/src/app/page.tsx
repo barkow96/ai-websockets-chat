@@ -1,6 +1,5 @@
 import { ChatRoomsService, UsersService } from "@/services";
 import { ChatView } from "@/views";
-import { Box } from "@chakra-ui/react";
 
 export default async function Home() {
   const chatRooms = await (async () => {
@@ -21,9 +20,5 @@ export default async function Home() {
     }
   })();
 
-  return (
-    <Box width="100%" maxWidth="1200px" margin="0 auto">
-      <ChatView users={users || []} chatRooms={chatRooms || []} />
-    </Box>
-  );
+  return <ChatView users={users || []} chatRooms={chatRooms || []} />;
 }

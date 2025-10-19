@@ -1,3 +1,4 @@
+"use client";
 import { ChatRoomsService } from "@/services";
 import { ChatRoom } from "@/types";
 import {
@@ -6,13 +7,6 @@ import {
   Flex,
   Heading,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Stack,
   Text,
   useDisclosure,
@@ -27,7 +21,7 @@ type Props = {
 };
 
 export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open, onOpen, onClose } = useDisclosure();
 
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>(rooms);
   const [newRoomName, setNewRoomName] = useState("");
@@ -60,7 +54,7 @@ export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
         </Button>
       </Flex>
 
-      <VStack spacing={2} align="stretch">
+      <VStack gap={2} align="stretch">
         {chatRooms.map(room => (
           <Box
             key={room.id}
@@ -84,13 +78,31 @@ export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
       </VStack>
 
       {/* Create Room Modal */}
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create New Chat Room</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Stack spacing={4}>
+      {open && (
+        <Box
+          position="fixed"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg="blackAlpha.600"
+          zIndex={1000}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          onClick={onClose}
+        >
+          <Box
+            bg="white"
+            p={6}
+            borderRadius="md"
+            minW="400px"
+            onClick={e => e.stopPropagation()}
+          >
+            <Text fontSize="lg" fontWeight="bold" mb={4}>
+              Create New Chat Room
+            </Text>
+            <Stack gap={4}>
               <Box>
                 <Text fontSize="sm" fontWeight="bold" mb={2}>
                   Room Name
@@ -112,21 +124,21 @@ export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
                 />
               </Box>
             </Stack>
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              colorScheme="blue"
-              onClick={handleCreateRoom}
-              isDisabled={!newRoomName.trim()}
-            >
-              Create Room
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+            <Flex gap={3} mt={6} justify="flex-end">
+              <Button variant="ghost" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="blue"
+                onClick={handleCreateRoom}
+                disabled={!newRoomName.trim()}
+              >
+                Create Room
+              </Button>
+            </Flex>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
