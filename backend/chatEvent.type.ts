@@ -1,3 +1,5 @@
+import { MessageDto } from "./database/types/messages";
+
 export const OChatEvent = {
 	Watch: "chat-watch",
 	Unwatch: "chat-unwatch",
@@ -11,9 +13,11 @@ export type ChatWatchEventsData = {
 	chatRoomId: string;
 };
 
-export type ChatMessageEventsData = {
+export type ChatMessageSendEventsData = {
 	chatRoomId: string;
 	message: string;
 	senderId: string;
 	timestamp: Date;
 };
+
+export type ChatMessageReceiveEventsData = MessageDto;

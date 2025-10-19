@@ -17,3 +17,12 @@ export type ChatMessageEventsData = {
   senderId: string;
   timestamp: Date;
 };
+
+export type ChatMessageReceiveEventsData = {
+  id: string;
+  chatRoomId: string;
+  text: string;
+  senderId: string;
+  senderName: string;
+  timestamp: Date;
+};

@@ -48,7 +48,7 @@ export function ChatView({ users, chatRooms }: Props) {
       />
 
       <Chat
-        messages={selectedRoomMessages}
+        selectedRoomMessages={selectedRoomMessages}
         selectedUser={selectedUser}
         selectedRoom={selectedRoom}
       />

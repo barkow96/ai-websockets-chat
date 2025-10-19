@@ -4,7 +4,7 @@ import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { ChatMessageEventsData, ChatWatchEventsData, OChatEvent } from "./chatEvent.type.ts";
+import { ChatMessageReceiveEventsData, ChatMessageSendEventsData, ChatWatchEventsData, OChatEvent } from "./chatEvent.type.ts";
 import { createMessage } from "./database/index.ts";
 import { chatRoomMessagesRouter, chatRoomsRouter, usersRouter } from "./routes";
 
@@ -30,17 +30,17 @@ io.on("connection", (socket) => {
 		socket.leave("chat-" + chatRoomId);
 	});
 
-	socket.on(OChatEvent.MessageNew, (data: ChatMessageEventsData) => {
+	socket.on(OChatEvent.MessageNew, (data: ChatMessageSendEventsData) => {
 		console.log("User send message to the chat room, data:", data);
 
-		io.to("chat-" + data.chatRoomId).emit(OChatEvent.MessageNew, data);
-
-		createMessage({
+		const message: ChatMessageReceiveEventsData = createMessage({
 			chatRoomId: data.chatRoomId,
 			text: data.message,
 			senderId: data.senderId,
 			timestamp: new Date(),
 		});
+
+		io.to("chat-" + data.chatRoomId).emit(OChatEvent.MessageNew, message);
 	});
 });
 

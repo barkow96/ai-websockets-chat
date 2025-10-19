@@ -1,6 +1,12 @@
 "use client";
 import { useSocketIo } from "@/providers";
-import { ChatRoom, Message, OChatEvent, User } from "@/types";
+import {
+  ChatMessageReceiveEventsData,
+  ChatRoom,
+  Message,
+  OChatEvent,
+  User,
+} from "@/types";
 import {
   Box,
   Button,
@@ -11,16 +17,21 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Props = {
-  messages: Message[];
+  selectedRoomMessages: Message[];
   selectedUser: User | null;
   selectedRoom: ChatRoom | null;
 };
 
-export const Chat = ({ messages, selectedUser, selectedRoom }: Props) => {
+export const Chat = ({
+  selectedRoomMessages,
+  selectedUser,
+  selectedRoom,
+}: Props) => {
   const [messageText, setMessageText] = useState("");
+  const [messages, setMessages] = useState<Message[]>(selectedRoomMessages);
 
   const { socket } = useSocketIo();
 
@@ -48,6 +59,36 @@ export const Chat = ({ messages, selectedUser, selectedRoom }: Props) => {
       handleSendMessage();
     }
   };
+
+  const handleNewMessage = useCallback(
+    (data: ChatMessageReceiveEventsData) => {
+      if (data.chatRoomId !== selectedRoom?.id) return;
+
+      const newMessage: Message = {
+        id: data.id,
+        chatRoomId: data.chatRoomId,
+        text: data.text,
+        senderId: data.senderId,
+        senderName: data.senderName,
+        timestamp: data.timestamp,
+      };
+
+      setMessages(prev => [...prev, newMessage]);
+    },
+    [selectedRoom]
+  );
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on(OChatEvent.MessageNew, (data: ChatMessageReceiveEventsData) =>
+      handleNewMessage(data)
+    );
+
+    return () => {
+      socket.off(OChatEvent.MessageNew);
+    };
+  }, [socket, handleNewMessage]);
 
   return (
     <Stack>
