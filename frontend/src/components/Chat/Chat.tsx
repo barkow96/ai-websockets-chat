@@ -27,8 +27,9 @@ export const Chat = ({
 }: Props) => {
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState<Message[]>(selectedRoomMessages);
-
   const { socket } = useSocketIo();
+
+  const showMessages = selectedRoom && selectedUser;
 
   const handleSendMessage = () => {
     if (
@@ -87,8 +88,6 @@ export const Chat = ({
     };
   }, [socket, handleNewMessage]);
 
-  const isReady = selectedRoom && selectedUser;
-
   return (
     <Box
       display="flex"
@@ -103,9 +102,11 @@ export const Chat = ({
       boxShadow="lg"
     >
       <ChatContainer>
-        {isReady ? (
+        {showMessages && (
           <MessagesList messages={messages} selectedUser={selectedUser} />
-        ) : (
+        )}
+
+        {!showMessages && (
           <ChatEmptyState
             selectedUser={selectedUser}
             selectedRoom={selectedRoom}
@@ -113,7 +114,7 @@ export const Chat = ({
         )}
       </ChatContainer>
 
-      {isReady && (
+      {showMessages && (
         <MessageInput
           messageText={messageText}
           onMessageTextChange={setMessageText}

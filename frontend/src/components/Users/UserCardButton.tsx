@@ -8,14 +8,14 @@ type Props = {
   onSelect: (user: User) => void;
 };
 
-export const UserCard = ({ user, isSelected, onSelect }: Props) => {
+export const UserCardButton = ({ user, isSelected, onSelect }: Props) => {
   return (
     <Button
       variant={isSelected ? "solid" : "outline"}
       colorScheme={isSelected ? "blue" : "gray"}
       onClick={() => onSelect(user)}
-      p={4}
-      h="auto"
+      padding={4}
+      height="auto"
       minH="80px"
     >
       <Flex direction="column" align="center" gap={2}>
@@ -43,4 +43,3 @@ export const UserCard = ({ user, isSelected, onSelect }: Props) => {
     </Button>
   );
 };
-

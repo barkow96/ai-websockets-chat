@@ -1,7 +1,7 @@
 "use client";
 import { ChatRoom } from "@/types";
 import { Button, VStack } from "@chakra-ui/react";
-import { RoomCard } from "./RoomCard";
+import { RoomCardButton } from "./RoomCardButton";
 
 type Props = {
   rooms: ChatRoom[];
@@ -24,7 +24,7 @@ export const RoomsList = ({
 
       <VStack gap={2} align="stretch">
         {rooms.map(room => (
-          <RoomCard
+          <RoomCardButton
             key={room.id}
             room={room}
             isSelected={selectedRoom?.id === room.id}

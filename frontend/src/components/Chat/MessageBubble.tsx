@@ -1,5 +1,5 @@
 "use client";
-import { Message, User } from "@/types";
+import { Message } from "@/types";
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 type Props = {
@@ -41,4 +41,3 @@ export const MessageBubble = ({ message, isCurrentUser }: Props) => {
     </Flex>
   );
 };
-

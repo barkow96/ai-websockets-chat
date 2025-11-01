@@ -34,4 +34,3 @@ export const MessagesList = ({ messages, selectedUser }: Props) => {
     </VStack>
   );
 };
-
