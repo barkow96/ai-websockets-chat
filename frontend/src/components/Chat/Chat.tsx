@@ -7,16 +7,12 @@ import {
   OChatEvent,
   User,
 } from "@/types";
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Input,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
+import { ChatContainer } from "./ChatContainer";
+import { ChatEmptyState } from "./ChatEmptyState";
+import { MessageInput } from "./MessageInput";
+import { MessagesList } from "./MessagesList";
 
 type Props = {
   selectedRoomMessages: Message[];
@@ -51,13 +47,6 @@ export const Chat = ({
       timestamp: new Date(),
     });
     setMessageText("");
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
   };
 
   const handleNewMessage = useCallback(
@@ -98,6 +87,8 @@ export const Chat = ({
     };
   }, [socket, handleNewMessage]);
 
+  const isReady = selectedRoom && selectedUser;
+
   return (
     <Box
       display="flex"
@@ -111,128 +102,23 @@ export const Chat = ({
       bg="gray.50"
       boxShadow="lg"
     >
-      <Box
-        flex="1"
-        overflowY="auto"
-        p={4}
-        bg="white"
-        css={{
-          "&::-webkit-scrollbar": {
-            width: "8px",
-          },
-          "&::-webkit-scrollbar-track": {
-            background: "#f1f1f1",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            background: "#888",
-            borderRadius: "4px",
-          },
-          "&::-webkit-scrollbar-thumb:hover": {
-            background: "#555",
-          },
-        }}
-      >
-        {selectedRoom && selectedUser ? (
-          <VStack gap={3} align="stretch">
-            {messages.length === 0 ? (
-              <Box textAlign="center" py={8}>
-                <Text color="gray.500" fontSize="sm">
-                  No messages. Start the conversation!
-                </Text>
-              </Box>
-            ) : (
-              messages.map(message => {
-                const isCurrentUser = message.senderId === selectedUser.id;
-                return (
-                  <Flex
-                    key={message.id}
-                    justify={isCurrentUser ? "flex-end" : "flex-start"}
-                  >
-                    <Box
-                      bg={isCurrentUser ? "blue.500" : "gray.200"}
-                      color={isCurrentUser ? "white" : "black"}
-                      px={4}
-                      py={3}
-                      borderRadius="lg"
-                      maxWidth="70%"
-                      boxShadow="sm"
-                      border={isCurrentUser ? "none" : "1px solid"}
-                      borderColor={isCurrentUser ? "transparent" : "gray.300"}
-                    >
-                      {!isCurrentUser && (
-                        <Text
-                          fontSize="xs"
-                          fontWeight="bold"
-                          mb={1}
-                          color="gray.700"
-                        >
-                          {message.senderName}
-                        </Text>
-                      )}
-                      <Text fontSize="sm" wordBreak="break-word">
-                        {message.text}
-                      </Text>
-                      <Text
-                        fontSize="xs"
-                        opacity={0.8}
-                        mt={1}
-                        textAlign={isCurrentUser ? "right" : "left"}
-                      >
-                        {new Date(message.timestamp)
-                          .toISOString()
-                          .slice(11, 16)}
-                      </Text>
-                    </Box>
-                  </Flex>
-                );
-              })
-            )}
-          </VStack>
+      <ChatContainer>
+        {isReady ? (
+          <MessagesList messages={messages} selectedUser={selectedUser} />
         ) : (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="100%"
-          >
-            <Text color="gray.400" fontSize="md" fontWeight="medium">
-              {!selectedUser && !selectedRoom
-                ? "Select a user and chat room to start the conversation"
-                : !selectedUser
-                  ? "Select a user to start the conversation"
-                  : "Select a chat room to start the conversation"}
-            </Text>
-          </Box>
+          <ChatEmptyState
+            selectedUser={selectedUser}
+            selectedRoom={selectedRoom}
+          />
         )}
-      </Box>
+      </ChatContainer>
 
-      {selectedRoom && selectedUser && (
-        <Box p={4} borderTop="2px solid" borderColor="gray.300" bg="white">
-          <HStack gap={2}>
-            <Input
-              value={messageText}
-              onChange={e => setMessageText(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Type a message..."
-              flex="1"
-              border="2px solid"
-              borderColor="gray.300"
-              _focus={{
-                borderColor: "blue.500",
-                boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)",
-              }}
-            />
-            <Button
-              onClick={handleSendMessage}
-              colorScheme="blue"
-              disabled={!messageText.trim()}
-              px={6}
-              fontWeight="semibold"
-            >
-              Send
-            </Button>
-          </HStack>
-        </Box>
+      {isReady && (
+        <MessageInput
+          messageText={messageText}
+          onMessageTextChange={setMessageText}
+          onSend={handleSendMessage}
+        />
       )}
     </Box>
   );

@@ -1,1 +1,1 @@
-export * from "./RoomSelector";
+export { RoomSelector } from "./RoomSelector";
