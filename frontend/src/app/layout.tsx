@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <Box width="100%" maxWidth="1200px" margin="0 auto">
+          <Box width="100%" maxWidth="1200px" margin="0 auto" padding="16px">
             {children}
           </Box>
         </Providers>

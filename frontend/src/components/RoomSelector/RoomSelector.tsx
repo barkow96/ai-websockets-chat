@@ -2,6 +2,11 @@
 import { ChatRoomsService } from "@/services";
 import { ChatRoom } from "@/types";
 import {
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemIndicator,
+  AccordionItemTrigger,
+  AccordionRoot,
   Box,
   Button,
   Flex,
@@ -12,7 +17,7 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   rooms: ChatRoom[];
@@ -20,12 +25,22 @@ type Props = {
   onRoomSelect: (room: ChatRoom) => void;
 };
 
+const ROOMS_ACCORDION_ITEM_VALUE = "rooms";
+
 export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
   const { open, onOpen, onClose } = useDisclosure();
 
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>(rooms);
   const [newRoomName, setNewRoomName] = useState("");
   const [newRoomDescription, setNewRoomDescription] = useState("");
+  const [openAccordionItems, setOpenAccordionItems] = useState([
+    ROOMS_ACCORDION_ITEM_VALUE,
+  ]);
+
+  // Automatically collapse when room is selected
+  useEffect(() => {
+    if (selectedRoom) setOpenAccordionItems([]);
+  }, [selectedRoom]);
 
   const handleCreateRoom = async () => {
     if (!newRoomName.trim()) return;
@@ -46,38 +61,78 @@ export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
   };
 
   return (
-    <Box p={4} borderRight="1px" borderColor="gray.200" minW="300px">
-      <Flex justify="space-between" align="center" mb={4}>
-        <Heading size="md">Dostępne pokoje</Heading>
-        <Button size="sm" colorScheme="blue" onClick={onOpen}>
-          + Dodaj pokój
-        </Button>
-      </Flex>
-
-      <VStack gap={2} align="stretch">
-        {chatRooms.map(room => (
-          <Box
-            key={room.id}
-            p={3}
-            border="1px"
-            borderColor={selectedRoom?.id === room.id ? "blue.500" : "gray.200"}
-            borderRadius="md"
-            cursor="pointer"
-            bg={selectedRoom?.id === room.id ? "blue.50" : "white"}
+    <Box borderBottom="2px" borderColor="gray.300">
+      <AccordionRoot
+        collapsible
+        value={openAccordionItems}
+        onValueChange={({ value }) => setOpenAccordionItems(value)}
+      >
+        <AccordionItem value={ROOMS_ACCORDION_ITEM_VALUE}>
+          <AccordionItemTrigger
+            px={4}
+            py={3}
             _hover={{ bg: "gray.50" }}
-            onClick={() => onRoomSelect(room)}
+            _expanded={{
+              bg: "gray.50",
+              borderBottom: "1px",
+              borderColor: "gray.200",
+            }}
           >
-            <Text fontWeight="bold" fontSize="sm">
-              {room.name}
-            </Text>
-            <Text fontSize="xs" color="gray.600">
-              {room.description}
-            </Text>
-          </Box>
-        ))}
-      </VStack>
+            <Heading size="md" flex="1" textAlign="left">
+              {selectedRoom
+                ? `Wybrany pokój: ${selectedRoom.name}`
+                : "Dostępne pokoje"}
+            </Heading>
+            <AccordionItemIndicator />
+          </AccordionItemTrigger>
 
-      {/* Create Room Modal */}
+          <AccordionItemContent>
+            <Box pb={4} px={4}>
+              <VStack gap={4} align="stretch" pt={4}>
+                <Flex justify="flex-end">
+                  <Button size="sm" colorScheme="blue" onClick={onOpen}>
+                    + Dodaj pokój
+                  </Button>
+                </Flex>
+
+                <VStack gap={2} align="stretch">
+                  {chatRooms.map(room => (
+                    <Box
+                      key={room.id}
+                      p={3}
+                      border="2px"
+                      borderColor={
+                        selectedRoom?.id === room.id ? "blue.500" : "gray.200"
+                      }
+                      borderRadius="md"
+                      cursor="pointer"
+                      bg={selectedRoom?.id === room.id ? "blue.50" : "white"}
+                      _hover={{
+                        bg:
+                          selectedRoom?.id === room.id ? "blue.50" : "gray.50",
+                        borderColor:
+                          selectedRoom?.id === room.id
+                            ? "blue.600"
+                            : "gray.300",
+                      }}
+                      onClick={() => onRoomSelect(room)}
+                      transition="all 0.2s"
+                    >
+                      <Text fontWeight="bold" fontSize="sm">
+                        {room.name}
+                      </Text>
+                      <Text fontSize="xs" color="gray.600">
+                        {room.description}
+                      </Text>
+                    </Box>
+                  ))}
+                </VStack>
+              </VStack>
+            </Box>
+          </AccordionItemContent>
+        </AccordionItem>
+      </AccordionRoot>
+
       {open && (
         <Box
           position="fixed"
