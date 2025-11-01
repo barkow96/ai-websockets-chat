@@ -53,8 +53,8 @@ export const Users = ({ users, selectedUser, onUserSelect }: Props) => {
           >
             <Heading size="md" flex="1" textAlign="left">
               {selectedUser
-                ? `Zalogowany jako: ${selectedUser.name}`
-                : "Wybierz użytkownika"}
+                ? `Logged in as: ${selectedUser.name}`
+                : "Select a user"}
             </Heading>
             <AccordionItemIndicator />
           </AccordionItemTrigger>

@@ -38,6 +38,7 @@ export const Chat = ({
     if (
       messageText.trim().length === 0 ||
       !selectedRoom ||
+      !selectedUser ||
       selectedRoom?.id.length === 0
     ) {
       return;
@@ -46,7 +47,7 @@ export const Chat = ({
     socket?.emit(OChatEvent.MessageNew, {
       chatRoomId: selectedRoom.id,
       message: messageText.trim(),
-      senderId: selectedUser?.id || "",
+      senderId: selectedUser.id,
       timestamp: new Date(),
     });
     setMessageText("");
@@ -82,8 +83,8 @@ export const Chat = ({
   }, [selectedRoomMessages]);
 
   useEffect(() => {
-    if (!selectedRoom) setMessages([]);
-  }, [selectedRoom]);
+    if (!selectedRoom || !selectedUser) setMessages([]);
+  }, [selectedRoom, selectedUser]);
 
   useEffect(() => {
     if (!socket) return;
@@ -131,17 +132,17 @@ export const Chat = ({
           },
         }}
       >
-        {selectedRoom ? (
+        {selectedRoom && selectedUser ? (
           <VStack gap={3} align="stretch">
             {messages.length === 0 ? (
               <Box textAlign="center" py={8}>
                 <Text color="gray.500" fontSize="sm">
-                  Brak wiadomości. Rozpocznij rozmowę!
+                  No messages. Start the conversation!
                 </Text>
               </Box>
             ) : (
               messages.map(message => {
-                const isCurrentUser = message.senderId === selectedUser?.id;
+                const isCurrentUser = message.senderId === selectedUser.id;
                 return (
                   <Flex
                     key={message.id}
@@ -195,20 +196,24 @@ export const Chat = ({
             height="100%"
           >
             <Text color="gray.400" fontSize="md" fontWeight="medium">
-              Wybierz pokój czatu, aby rozpocząć rozmowę
+              {!selectedUser && !selectedRoom
+                ? "Select a user and chat room to start the conversation"
+                : !selectedUser
+                  ? "Select a user to start the conversation"
+                  : "Select a chat room to start the conversation"}
             </Text>
           </Box>
         )}
       </Box>
 
-      {selectedRoom && (
+      {selectedRoom && selectedUser && (
         <Box p={4} borderTop="2px solid" borderColor="gray.300" bg="white">
           <HStack gap={2}>
             <Input
               value={messageText}
               onChange={e => setMessageText(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Napisz wiadomość..."
+              placeholder="Type a message..."
               flex="1"
               border="2px solid"
               borderColor="gray.300"
@@ -224,7 +229,7 @@ export const Chat = ({
               px={6}
               fontWeight="semibold"
             >
-              Wyślij
+              Send
             </Button>
           </HStack>
         </Box>

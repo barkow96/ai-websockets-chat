@@ -80,8 +80,8 @@ export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
           >
             <Heading size="md" flex="1" textAlign="left">
               {selectedRoom
-                ? `Wybrany pokój: ${selectedRoom.name}`
-                : "Dostępne pokoje"}
+                ? `Selected room: ${selectedRoom.name}`
+                : "Available rooms"}
             </Heading>
             <AccordionItemIndicator />
           </AccordionItemTrigger>
@@ -91,7 +91,7 @@ export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
               <VStack gap={4} align="stretch" pt={4}>
                 <Flex justify="flex-end">
                   <Button size="sm" colorScheme="blue" onClick={onOpen}>
-                    + Dodaj pokój
+                    + Add room
                   </Button>
                 </Flex>
 
