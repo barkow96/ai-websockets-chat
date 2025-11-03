@@ -2,25 +2,25 @@
 	{
 		"id": "1",
 		"name": "General",
-		"description": "General discussion",
-		"userIds": ["1", "2", "3"]
+		"description": "General discussion for everyone",
+		"userIds": ["1", "2", "3", "4"]
 	},
 	{
 		"id": "2",
-		"name": "Tech Talk",
-		"description": "Technology discussions",
-		"userIds": ["1", "2"]
+		"name": "Technology",
+		"description": "Discussions about technologies and programming",
+		"userIds": ["1", "2", "4"]
 	},
 	{
 		"id": "3",
-		"name": "Random",
-		"description": "Random chat",
-		"userIds": ["2", "3"]
+		"name": "Projects",
+		"description": "Project planning and coordination",
+		"userIds": ["1", "3", "4"]
 	},
 	{
-		"name": "New Room 123",
-		"description": "New Room 123ABC",
-		"userIds": [],
-		"id": "1759695226436"
+		"id": "4",
+		"name": "Off-topic",
+		"description": "Casual conversations",
+		"userIds": ["2", "3", "4"]
 	}
 ]

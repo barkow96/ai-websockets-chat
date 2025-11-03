@@ -1,37 +1,156 @@
 [
-  {
-    "chatRoomId": "2",
-    "text": "Moja wiadomość :)",
-    "senderId": "1",
-    "timestamp": "2025-10-05T19:43:28.066Z",
-    "id": "1759693408066"
-  },
-  {
-    "chatRoomId": "1",
-    "text": "ABCDEF",
-    "senderId": "1",
-    "timestamp": "2025-10-05T19:48:13.013Z",
-    "id": "1759693693013"
-  },
-  {
-    "chatRoomId": "1",
-    "text": "ewqewq",
-    "senderId": "1",
-    "timestamp": "2025-10-05T19:48:16.533Z",
-    "id": "1759693696533"
-  },
-  {
-    "chatRoomId": "3",
-    "text": "test",
-    "senderId": "1",
-    "timestamp": "2025-10-12T16:26:46.505Z",
-    "id": "1760286406505"
-  },
-  {
-    "chatRoomId": "3",
-    "text": "test",
-    "senderId": "1",
-    "timestamp": "2025-10-12T16:26:54.067Z",
-    "id": "1760286414068"
-  }
+	{
+		"chatRoomId": "1",
+		"text": "Hello everyone! 👋",
+		"senderId": "1",
+		"timestamp": "2025-01-15T09:00:00.000Z",
+		"id": "1"
+	},
+	{
+		"chatRoomId": "1",
+		"text": "Hi Anna! Nice to see you.",
+		"senderId": "2",
+		"timestamp": "2025-01-15T09:02:15.000Z",
+		"id": "2"
+	},
+	{
+		"chatRoomId": "1",
+		"text": "Hey everyone! 👋",
+		"senderId": "3",
+		"timestamp": "2025-01-15T09:03:30.000Z",
+		"id": "3"
+	},
+	{
+		"chatRoomId": "1",
+		"text": "Good morning! How are you all doing?",
+		"senderId": "4",
+		"timestamp": "2025-01-15T09:05:00.000Z",
+		"id": "4"
+	},
+	{
+		"chatRoomId": "2",
+		"text": "Does anyone have experience with WebSockets?",
+		"senderId": "1",
+		"timestamp": "2025-01-15T10:00:00.000Z",
+		"id": "5"
+	},
+	{
+		"chatRoomId": "2",
+		"text": "Yes, I've worked with them in Node.js. How can I help?",
+		"senderId": "2",
+		"timestamp": "2025-01-15T10:02:30.000Z",
+		"id": "6"
+	},
+	{
+		"chatRoomId": "2",
+		"text": "I'm looking for the best library for real-time communication. What do you recommend?",
+		"senderId": "1",
+		"timestamp": "2025-01-15T10:03:15.000Z",
+		"id": "7"
+	},
+	{
+		"chatRoomId": "2",
+		"text": "Socket.io is a good choice - easy to use and well documented.",
+		"senderId": "4",
+		"timestamp": "2025-01-15T10:05:00.000Z",
+		"id": "8"
+	},
+	{
+		"chatRoomId": "2",
+		"text": "I agree with Thomas. Socket.io has great support and a large community.",
+		"senderId": "2",
+		"timestamp": "2025-01-15T10:06:20.000Z",
+		"id": "9"
+	},
+	{
+		"chatRoomId": "2",
+		"text": "Thanks for the advice! I'll check out Socket.io.",
+		"senderId": "1",
+		"timestamp": "2025-01-15T10:07:45.000Z",
+		"id": "10"
+	},
+	{
+		"chatRoomId": "3",
+		"text": "Can we schedule a meeting for tomorrow?",
+		"senderId": "1",
+		"timestamp": "2025-01-15T11:00:00.000Z",
+		"id": "11"
+	},
+	{
+		"chatRoomId": "3",
+		"text": "I'm available tomorrow after 2 PM. Does that work?",
+		"senderId": "3",
+		"timestamp": "2025-01-15T11:02:00.000Z",
+		"id": "12"
+	},
+	{
+		"chatRoomId": "3",
+		"text": "Yes, 2 PM works for me.",
+		"senderId": "4",
+		"timestamp": "2025-01-15T11:03:30.000Z",
+		"id": "13"
+	},
+	{
+		"chatRoomId": "3",
+		"text": "Great! Meeting on January 16th at 2 PM. Confirmed?",
+		"senderId": "1",
+		"timestamp": "2025-01-15T11:05:00.000Z",
+		"id": "14"
+	},
+	{
+		"chatRoomId": "3",
+		"text": "Confirmed! 👍",
+		"senderId": "3",
+		"timestamp": "2025-01-15T11:06:00.000Z",
+		"id": "15"
+	},
+	{
+		"chatRoomId": "4",
+		"text": "Anyone playing any games? 🎮",
+		"senderId": "2",
+		"timestamp": "2025-01-15T12:00:00.000Z",
+		"id": "16"
+	},
+	{
+		"chatRoomId": "4",
+		"text": "I mainly play strategy games. What about you?",
+		"senderId": "3",
+		"timestamp": "2025-01-15T12:02:30.000Z",
+		"id": "17"
+	},
+	{
+		"chatRoomId": "4",
+		"text": "RPGs and FPS. Maybe we could play something together?",
+		"senderId": "2",
+		"timestamp": "2025-01-15T12:04:00.000Z",
+		"id": "18"
+	},
+	{
+		"chatRoomId": "4",
+		"text": "Sounds fun! What game specifically?",
+		"senderId": "4",
+		"timestamp": "2025-01-15T12:05:30.000Z",
+		"id": "19"
+	},
+	{
+		"chatRoomId": "4",
+		"text": "I can suggest a few options. I'll message you privately.",
+		"senderId": "2",
+		"timestamp": "2025-01-15T12:07:00.000Z",
+		"id": "20"
+	},
+	{
+		"chatRoomId": "1",
+		"text": "Reminder about tomorrow's meeting at 2 PM!",
+		"senderId": "1",
+		"timestamp": "2025-01-15T16:00:00.000Z",
+		"id": "21"
+	},
+	{
+		"chatRoomId": "1",
+		"text": "Thanks for the reminder!",
+		"senderId": "3",
+		"timestamp": "2025-01-15T16:01:30.000Z",
+		"id": "22"
+	}
 ]
