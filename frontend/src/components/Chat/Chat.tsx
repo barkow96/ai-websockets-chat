@@ -1,5 +1,6 @@
 "use client";
 import { useSocketIo } from "@/providers";
+import { AiService } from "@/services";
 import {
   ChatMessageReceiveEventsData,
   ChatRoom,
@@ -7,7 +8,7 @@ import {
   OChatEvent,
   User,
 } from "@/types";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { ChatContainer } from "./ChatContainer";
 import { ChatEmptyState } from "./ChatEmptyState";
@@ -68,6 +69,14 @@ export const Chat = ({
     [selectedRoom]
   );
 
+  // TODO: Improve this function and send the message from the AI to the chat-room
+  const generateResponse = useCallback(async () => {
+    if (!selectedUser) return;
+
+    const result = await AiService.generateResponse(messages, selectedUser?.id);
+    console.log("Result from BE", result);
+  }, [messages, selectedUser]);
+
   useEffect(() => {
     setMessages(selectedRoomMessages);
   }, [selectedRoomMessages]);
@@ -121,6 +130,16 @@ export const Chat = ({
           onSend={handleSendMessage}
         />
       )}
+
+      {/* TODO: Improve the button */}
+      <Button
+        onClick={generateResponse}
+        colorScheme="blue"
+        fontWeight="semibold"
+        px={6}
+      >
+        Generate Response
+      </Button>
     </Box>
   );
 };

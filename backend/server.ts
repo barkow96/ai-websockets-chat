@@ -1,12 +1,12 @@
+import "dotenv-flow/config";
 import bodyParser from "body-parser";
 import cors from "cors";
-import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { ChatMessageReceiveEventsData, ChatMessageSendEventsData, ChatWatchEventsData, OChatEvent } from "./chatEvent.type.ts";
 import { createMessage } from "./database/index.ts";
-import { chatRoomMessagesRouter, chatRoomsRouter, usersRouter } from "./routes";
+import { aiRouter, chatRoomMessagesRouter, chatRoomsRouter, usersRouter } from "./routes";
 
 const port = process.env.PORT;
 const client1Url = `http://localhost:${process.env.CLIENT_1_PORT}`;
@@ -50,6 +50,7 @@ app.use(cors({ origin: [client1Url, client2Url, client3Url] }));
 app.use("/chat-rooms", chatRoomsRouter);
 app.use("/chat-rooms", chatRoomMessagesRouter);
 app.use("/users", usersRouter);
+app.use("/ai", aiRouter);
 
 httpServer.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
