@@ -1,3 +1,4 @@
+import { assureMessage, assureMessages } from "@/mappers";
 import { Message } from "@/types";
 
 export const ChatRoomMessagesService = {
@@ -5,7 +6,8 @@ export const ChatRoomMessagesService = {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms/${chatRoomId}/messages`
     );
-    return response.json();
+    const maybeMessages = await response.json();
+    return assureMessages(maybeMessages);
   },
 
   createChatRoomMessage: async (
@@ -22,6 +24,7 @@ export const ChatRoomMessagesService = {
         body: JSON.stringify(message),
       }
     );
-    return response.json();
+    const maybeMessage = await response.json();
+    return assureMessage(maybeMessage);
   },
 } as const;
