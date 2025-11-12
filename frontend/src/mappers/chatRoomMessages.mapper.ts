@@ -1,6 +1,6 @@
+import { assureArray, assureDate, assureString } from "@/mappers";
 import { Message } from "@/types";
 import { get } from "lodash-es";
-import { assureArray, assureDate, assureString } from "./primitives.mapper";
 
 export const assureMessage = (val: unknown): Message => {
   const maybeId = get(val, "id");
@@ -21,11 +21,6 @@ export const assureMessage = (val: unknown): Message => {
 };
 
 export const assureMessages = (val: unknown): Message[] => {
-  const maybeMessages = get(val, "messages");
-
-  const maybeMessagesArray = assureArray(
-    maybeMessages,
-    "assureMessages.messages"
-  );
+  const maybeMessagesArray = assureArray(val, "assureMessages.messages");
   return maybeMessagesArray.map(assureMessage);
 };

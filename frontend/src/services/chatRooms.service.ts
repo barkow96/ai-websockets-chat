@@ -1,3 +1,4 @@
+import { assureChatRoom, assureChatRooms } from "@/mappers";
 import { ChatRoom } from "@/types";
 
 export const ChatRoomsService = {
@@ -5,14 +6,18 @@ export const ChatRoomsService = {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms`
     );
-    return response.json();
+
+    const maybeChatRooms = await response.json();
+    return assureChatRooms(maybeChatRooms);
   },
 
   getChatRoom: async (id: string): Promise<ChatRoom | undefined> => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms/${id}`
     );
-    return response.json();
+
+    const maybeChatRoom = await response.json();
+    return assureChatRoom(maybeChatRoom);
   },
 
   createChatRoom: async (
@@ -28,6 +33,8 @@ export const ChatRoomsService = {
         body: JSON.stringify(chatRoom),
       }
     );
-    return response.json();
+
+    const maybeChatRoom = await response.json();
+    return assureChatRoom(maybeChatRoom);
   },
 } as const;

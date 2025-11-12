@@ -6,6 +6,7 @@ export const ChatRoomMessagesService = {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms/${chatRoomId}/messages`
     );
+
     const maybeMessages = await response.json();
     return assureMessages(maybeMessages);
   },
@@ -24,6 +25,7 @@ export const ChatRoomMessagesService = {
         body: JSON.stringify(message),
       }
     );
+
     const maybeMessage = await response.json();
     return assureMessage(maybeMessage);
   },

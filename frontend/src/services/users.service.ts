@@ -1,16 +1,21 @@
+import { assureUser, assureUsers } from "@/mappers";
 import { User } from "@/types";
 
 export const UsersService = {
   getUsers: async (): Promise<User[]> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`);
-    return response.json();
+
+    const maybeUsers = await response.json();
+    return assureUsers(maybeUsers);
   },
 
   getUser: async (id: string): Promise<User | undefined> => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`
     );
-    return response.json();
+
+    const maybeUser = await response.json();
+    return assureUser(maybeUser);
   },
 
   createUser: async (user: User) => {
@@ -21,6 +26,8 @@ export const UsersService = {
       },
       body: JSON.stringify(user),
     });
-    return response.json();
+
+    const maybeUser = await response.json();
+    return assureUser(maybeUser);
   },
 } as const;
