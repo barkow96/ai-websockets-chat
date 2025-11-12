@@ -8,11 +8,11 @@ import {
   OChatEvent,
   User,
 } from "@/types";
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { ChatContainer } from "./ChatContainer";
 import { ChatEmptyState } from "./ChatEmptyState";
-import { MessageInput } from "./MessageInput";
+import { MessageControls } from "./MessageControls";
 import { MessagesList } from "./MessagesList";
 
 type Props = {
@@ -71,7 +71,6 @@ export const Chat = ({
     [selectedRoom]
   );
 
-  // TODO: Improve this function and send the message from the AI to the chat-room
   const generateResponse = useCallback(async () => {
     if (!selectedUser) return;
 
@@ -79,7 +78,9 @@ export const Chat = ({
       messages,
       selectedUser?.id
     );
-    console.log("Result from BE", aiMessageResponse);
+
+    if (!aiMessageResponse) return;
+    setMessageText(aiMessageResponse.message);
   }, [messages, selectedUser]);
 
   useEffect(() => {
@@ -129,22 +130,13 @@ export const Chat = ({
       </ChatContainer>
 
       {showMessages && (
-        <MessageInput
+        <MessageControls
           messageText={messageText}
           onMessageTextChange={setMessageText}
           onSend={handleSendMessage}
+          isAiEnabled={isAiEnabled}
+          onGenerateResponse={generateResponse}
         />
-      )}
-
-      {isAiEnabled && (
-        <Button
-          onClick={generateResponse}
-          colorScheme="blue"
-          fontWeight="semibold"
-          px={6}
-        >
-          Generate Response
-        </Button>
       )}
     </Box>
   );

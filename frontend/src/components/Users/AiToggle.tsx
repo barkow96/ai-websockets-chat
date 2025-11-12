@@ -1,4 +1,5 @@
 "use client";
+import { gradientAi } from "@/styles";
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 type Props = {
@@ -58,13 +59,10 @@ export const AiToggle = ({ isAiEnabled, onAiToggle }: Props) => {
             boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
           }}
           style={{
-            background: isAiEnabled
-              ? "linear-gradient(to right, #9f7aea, #ed64a6, #f6ad55)"
-              : undefined,
+            background: isAiEnabled ? gradientAi : undefined,
           }}
         />
       </Box>
     </Flex>
   );
 };
-

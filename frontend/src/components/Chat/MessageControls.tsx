@@ -1,16 +1,21 @@
 "use client";
+import { gradientAi } from "@/styles";
 import { Box, Button, HStack, Input } from "@chakra-ui/react";
 
 type Props = {
   messageText: string;
   onMessageTextChange: (value: string) => void;
   onSend: () => void;
+  isAiEnabled: boolean;
+  onGenerateResponse: () => void;
 };
 
-export const MessageInput = ({
+export const MessageControls = ({
   messageText,
   onMessageTextChange,
   onSend,
+  isAiEnabled,
+  onGenerateResponse,
 }: Props) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -37,13 +42,27 @@ export const MessageInput = ({
         />
         <Button
           onClick={onSend}
-          colorScheme="blue"
           disabled={!messageText.trim()}
-          px={6}
           fontWeight="semibold"
+          paddingX={6}
         >
           Send
         </Button>
+
+        {isAiEnabled && (
+          <Button
+            onClick={onGenerateResponse}
+            fontWeight="semibold"
+            paddingX={6}
+            style={{ background: gradientAi }}
+            color="white"
+            _hover={{
+              opacity: 0.9,
+            }}
+          >
+            Generate Response
+          </Button>
+        )}
       </HStack>
     </Box>
   );
