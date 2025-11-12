@@ -19,12 +19,14 @@ type Props = {
   selectedRoomMessages: Message[];
   selectedUser: User | null;
   selectedRoom: ChatRoom | null;
+  isAiEnabled: boolean;
 };
 
 export const Chat = ({
   selectedRoomMessages,
   selectedUser,
   selectedRoom,
+  isAiEnabled,
 }: Props) => {
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState<Message[]>(selectedRoomMessages);
@@ -134,15 +136,16 @@ export const Chat = ({
         />
       )}
 
-      {/* TODO: Improve the button */}
-      <Button
-        onClick={generateResponse}
-        colorScheme="blue"
-        fontWeight="semibold"
-        px={6}
-      >
-        Generate Response
-      </Button>
+      {isAiEnabled && (
+        <Button
+          onClick={generateResponse}
+          colorScheme="blue"
+          fontWeight="semibold"
+          px={6}
+        >
+          Generate Response
+        </Button>
+      )}
     </Box>
   );
 };

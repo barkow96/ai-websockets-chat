@@ -10,6 +10,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { AiToggle } from "./AiToggle";
 import { UsersList } from "./UsersList";
 
 const USERS_ACCORDION_ITEM_VALUE = "users";
@@ -18,9 +19,17 @@ type Props = {
   users: User[];
   selectedUser: User | null;
   onUserSelect: (user: User) => void;
+  isAiEnabled: boolean;
+  onAiToggle: (enabled: boolean) => void;
 };
 
-export const Users = ({ users, selectedUser, onUserSelect }: Props) => {
+export const Users = ({
+  users,
+  selectedUser,
+  onUserSelect,
+  isAiEnabled,
+  onAiToggle,
+}: Props) => {
   const [openAccordionItems, setOpenAccordionItems] = useState([
     USERS_ACCORDION_ITEM_VALUE,
   ]);
@@ -52,6 +61,9 @@ export const Users = ({ users, selectedUser, onUserSelect }: Props) => {
                 ? `Logged in as: ${selectedUser.name}`
                 : "Select a user"}
             </Heading>
+            {selectedUser && (
+              <AiToggle isAiEnabled={isAiEnabled} onAiToggle={onAiToggle} />
+            )}
             <AccordionItemIndicator />
           </AccordionItemTrigger>
 

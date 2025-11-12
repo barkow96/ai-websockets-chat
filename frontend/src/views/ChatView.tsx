@@ -19,6 +19,7 @@ export function ChatView({ users, chatRooms }: Props) {
   const [selectedRoomMessages, setSelectedRoomMessages] = useState<Message[]>(
     []
   );
+  const [isAiEnabled, setIsAiEnabled] = useState(false);
 
   const handleRoomSelect = useCallback(
     async (room: ChatRoom) => {
@@ -39,6 +40,8 @@ export function ChatView({ users, chatRooms }: Props) {
         users={users}
         selectedUser={selectedUser}
         onUserSelect={setSelectedUser}
+        isAiEnabled={isAiEnabled}
+        onAiToggle={setIsAiEnabled}
       />
 
       <RoomSelector
@@ -51,6 +54,7 @@ export function ChatView({ users, chatRooms }: Props) {
         selectedRoomMessages={selectedRoomMessages}
         selectedUser={selectedUser}
         selectedRoom={selectedRoom}
+        isAiEnabled={isAiEnabled}
       />
     </VStack>
   );
