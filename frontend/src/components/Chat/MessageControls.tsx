@@ -1,13 +1,22 @@
 "use client";
 import { gradientAi } from "@/styles";
-import { Box, Button, HStack, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Input,
+  Spinner,
+  Stack,
+  chakra,
+} from "@chakra-ui/react";
 
 type Props = {
   messageText: string;
   onMessageTextChange: (value: string) => void;
   onSend: () => void;
   isAiEnabled: boolean;
-  onGenerateResponse: () => void;
+  onGenerateAiResponse: () => void;
+  isGeneratingAiResponse: boolean;
 };
 
 export const MessageControls = ({
@@ -15,7 +24,8 @@ export const MessageControls = ({
   onMessageTextChange,
   onSend,
   isAiEnabled,
-  onGenerateResponse,
+  onGenerateAiResponse,
+  isGeneratingAiResponse,
 }: Props) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -26,13 +36,12 @@ export const MessageControls = ({
 
   return (
     <Box p={4} borderTop="2px solid" borderColor="gray.300" bg="white">
-      <HStack gap={2}>
+      <Stack direction={{ base: "column", md: "row" }} gap={2}>
         <Input
           value={messageText}
           onChange={e => onMessageTextChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type a message..."
-          flex="1"
           border="2px solid"
           borderColor="gray.300"
           _focus={{
@@ -40,6 +49,7 @@ export const MessageControls = ({
             boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)",
           }}
         />
+
         <Button
           onClick={onSend}
           disabled={!messageText.trim()}
@@ -50,20 +60,42 @@ export const MessageControls = ({
         </Button>
 
         {isAiEnabled && (
-          <Button
-            onClick={onGenerateResponse}
-            fontWeight="semibold"
-            paddingX={6}
-            style={{ background: gradientAi }}
-            color="white"
-            _hover={{
-              opacity: 0.9,
-            }}
-          >
-            Generate Response
-          </Button>
+          <>
+            <Button
+              onClick={onGenerateAiResponse}
+              disabled={isGeneratingAiResponse}
+              fontWeight="semibold"
+              paddingX={6}
+              style={{ background: gradientAi }}
+              color="white"
+              _hover={{
+                opacity: 0.9,
+              }}
+            >
+              {isGeneratingAiResponse ? (
+                <HStack gap={2}>
+                  <Spinner size="sm" /> Generating...
+                </HStack>
+              ) : (
+                <chakra.span> Generate Response</chakra.span>
+              )}
+            </Button>
+
+            {/* TODO: Implement full AI mode (automatic response generation for all messages) */}
+            <Button
+              fontWeight="semibold"
+              paddingX={6}
+              style={{ background: gradientAi }}
+              color="white"
+              _hover={{
+                opacity: 0.9,
+              }}
+            >
+              Enable Full AI Mode
+            </Button>
+          </>
         )}
-      </HStack>
+      </Stack>
     </Box>
   );
 };

@@ -31,6 +31,7 @@ export const Chat = ({
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState<Message[]>(selectedRoomMessages);
   const { socket } = useSocketIo();
+  const [isGeneratingAiResponse, setIsGeneratingAiResponse] = useState(false);
 
   const showMessages = selectedRoom && selectedUser;
 
@@ -74,10 +75,14 @@ export const Chat = ({
   const generateResponse = useCallback(async () => {
     if (!selectedUser) return;
 
+    setIsGeneratingAiResponse(true);
+
     const aiMessageResponse = await AiService.generateResponse(
       messages,
       selectedUser?.id
     );
+
+    setIsGeneratingAiResponse(false);
 
     if (!aiMessageResponse) return;
     setMessageText(aiMessageResponse.message);
@@ -135,7 +140,8 @@ export const Chat = ({
           onMessageTextChange={setMessageText}
           onSend={handleSendMessage}
           isAiEnabled={isAiEnabled}
-          onGenerateResponse={generateResponse}
+          onGenerateAiResponse={generateResponse}
+          isGeneratingAiResponse={isGeneratingAiResponse}
         />
       )}
     </Box>
