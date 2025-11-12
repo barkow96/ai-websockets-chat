@@ -73,8 +73,11 @@ export const Chat = ({
   const generateResponse = useCallback(async () => {
     if (!selectedUser) return;
 
-    const result = await AiService.generateResponse(messages, selectedUser?.id);
-    console.log("Result from BE", result);
+    const aiMessageResponse = await AiService.generateResponse(
+      messages,
+      selectedUser?.id
+    );
+    console.log("Result from BE", aiMessageResponse);
   }, [messages, selectedUser]);
 
   useEffect(() => {
