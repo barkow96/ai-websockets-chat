@@ -1,21 +1,22 @@
 import { assureMessage, assureMessages } from "@/mappers";
 import { Message } from "@/types";
+import { enhancedFetch } from "@/utils";
 
 export const ChatRoomMessagesService = {
   getChatRoomMessages: async (chatRoomId: string): Promise<Message[]> => {
-    const response = await fetch(
+    const maybeMessages = await enhancedFetch<unknown>(
       `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms/${chatRoomId}/messages`
     );
 
-    const maybeMessages = await response.json();
+    if (!maybeMessages) return [];
     return assureMessages(maybeMessages);
   },
 
   createChatRoomMessage: async (
     chatRoomId: string,
     message: Message
-  ): Promise<Message> => {
-    const response = await fetch(
+  ): Promise<Message | undefined> => {
+    const maybeMessage = await enhancedFetch<unknown>(
       `${process.env.NEXT_PUBLIC_API_URL}/chat-rooms/${chatRoomId}/messages`,
       {
         method: "POST",
@@ -26,7 +27,7 @@ export const ChatRoomMessagesService = {
       }
     );
 
-    const maybeMessage = await response.json();
+    if (!maybeMessage) return;
     return assureMessage(maybeMessage);
   },
 } as const;

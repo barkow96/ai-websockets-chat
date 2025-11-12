@@ -1,8 +1,9 @@
 import { Message } from "@/types";
+import { enhancedFetch } from "@/utils";
 
 export const AiService = {
   generateResponse: async (messages: Message[], senderId: string) => {
-    const response = await fetch(
+    return enhancedFetch<unknown>(
       `${process.env.NEXT_PUBLIC_API_URL}/ai/generate-response`,
       {
         method: "POST",
@@ -12,6 +13,5 @@ export const AiService = {
         body: JSON.stringify({ messages, senderId }),
       }
     );
-    return response.json();
   },
 } as const;
