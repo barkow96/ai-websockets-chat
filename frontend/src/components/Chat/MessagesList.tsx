@@ -1,14 +1,11 @@
 "use client";
-import { Message, User } from "@/types";
+import { useChat } from "@/providers";
 import { Box, Text, VStack } from "@chakra-ui/react";
 import { MessageBubble } from "./MessageBubble";
 
-type Props = {
-  messages: Message[];
-  selectedUser: User | null;
-};
+export const MessagesList = () => {
+  const { messages, selectedUser } = useChat();
 
-export const MessagesList = ({ messages, selectedUser }: Props) => {
   if (messages.length === 0) {
     return (
       <Box textAlign="center" py={8}>
@@ -22,12 +19,11 @@ export const MessagesList = ({ messages, selectedUser }: Props) => {
   return (
     <VStack gap={3} align="stretch">
       {messages.map(message => {
-        const isCurrentUser = message.senderId === selectedUser?.id;
         return (
           <MessageBubble
             key={message.id}
             message={message}
-            isCurrentUser={isCurrentUser}
+            isCurrentUser={message.senderId === selectedUser?.id}
           />
         );
       })}

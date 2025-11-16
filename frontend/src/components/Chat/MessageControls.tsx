@@ -1,4 +1,5 @@
 "use client";
+import { useChat } from "@/providers";
 import { gradientAi } from "@/styles";
 import {
   Box,
@@ -10,41 +11,41 @@ import {
   chakra,
 } from "@chakra-ui/react";
 
-type Props = {
-  messageText: string;
-  onMessageTextChange: (value: string) => void;
-  onSend: (text?: string) => void;
-  isAiEnabled: boolean;
-  onGenerateAiResponse: () => void;
-  isGeneratingAiResponse: boolean;
-  onToggleFullAiMode: () => void;
-  isFullAiModeEnabled: boolean;
-};
+export const MessageControls = () => {
+  const {
+    messageText,
+    setMessageText,
+    sendMessage,
+    isAiEnabled,
+    generateAiResponse,
+    isGeneratingAiResponse,
+    toggleFullAiMode,
+    isFullAiModeEnabled,
+    showMessages,
+  } = useChat();
 
-export const MessageControls = ({
-  messageText,
-  onMessageTextChange,
-  onSend,
-  isAiEnabled,
-  onGenerateAiResponse,
-  isGeneratingAiResponse,
-  onToggleFullAiMode,
-  isFullAiModeEnabled,
-}: Props) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      onSend();
+      sendMessage();
     }
   };
+
+  const handleGenerateAiResponse = async () => {
+    const response = await generateAiResponse();
+    if (response) setMessageText(response);
+  };
+
+  if (!showMessages) return null;
 
   return (
     <Box p={4} borderTop="2px solid" borderColor="gray.300" bg="white">
       <Stack direction={{ base: "column", md: "row" }} gap={2}>
         <Input
           value={messageText}
-          onChange={e => onMessageTextChange(e.target.value)}
+          onChange={e => setMessageText(e.target.value)}
           onKeyDown={handleKeyDown}
+          disabled={isGeneratingAiResponse}
           placeholder="Type a message..."
           border="2px solid"
           borderColor="gray.300"
@@ -55,7 +56,7 @@ export const MessageControls = ({
         />
 
         <Button
-          onClick={() => onSend()}
+          onClick={() => sendMessage()}
           disabled={!messageText.trim()}
           fontWeight="semibold"
           paddingX={6}
@@ -66,7 +67,7 @@ export const MessageControls = ({
         {isAiEnabled && (
           <>
             <Button
-              onClick={onGenerateAiResponse}
+              onClick={handleGenerateAiResponse}
               disabled={isGeneratingAiResponse}
               fontWeight="semibold"
               paddingX={6}
@@ -86,7 +87,7 @@ export const MessageControls = ({
             </Button>
 
             <Button
-              onClick={onToggleFullAiMode}
+              onClick={toggleFullAiMode}
               fontWeight="semibold"
               paddingX={6}
               style={{ background: gradientAi }}

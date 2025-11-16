@@ -1,12 +1,12 @@
 "use client";
+import { useChat } from "@/providers";
 import { Box } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { MessagesEmpty } from "./MessagesEmpty";
+import { MessagesList } from "./MessagesList";
 
-type Props = {
-  children: ReactNode;
-};
+export const Messages = () => {
+  const { showMessages } = useChat();
 
-export const MessagesContainer = ({ children }: Props) => {
   return (
     <Box
       flex="1"
@@ -29,7 +29,7 @@ export const MessagesContainer = ({ children }: Props) => {
         },
       }}
     >
-      {children}
+      {showMessages ? <MessagesList /> : <MessagesEmpty />}
     </Box>
   );
 };
