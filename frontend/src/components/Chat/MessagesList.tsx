@@ -18,15 +18,13 @@ export const MessagesList = () => {
 
   return (
     <VStack gap={3} align="stretch">
-      {messages.map(message => {
-        return (
-          <MessageBubble
-            key={message.id}
-            message={message}
-            isCurrentUser={message.senderId === selectedUser?.id}
-          />
-        );
-      })}
+      {messages.map(message => (
+        <MessageBubble
+          key={message.id}
+          message={message}
+          isCurrentUser={message.senderId === selectedUser?.id}
+        />
+      ))}
     </VStack>
   );
 };

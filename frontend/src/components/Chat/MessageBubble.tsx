@@ -7,14 +7,18 @@ type Props = {
   isCurrentUser: boolean;
 };
 
+const formatTime = (timestamp: Date | string): string => {
+  return new Date(timestamp).toISOString().slice(11, 16);
+};
+
 export const MessageBubble = ({ message, isCurrentUser }: Props) => {
   return (
     <Flex justify={isCurrentUser ? "flex-end" : "flex-start"}>
       <Box
-        bg={isCurrentUser ? "blue.500" : "gray.200"}
+        background={isCurrentUser ? "blue.500" : "gray.200"}
         color={isCurrentUser ? "white" : "black"}
-        px={4}
-        py={3}
+        paddingX={4}
+        paddingY={3}
         borderRadius="lg"
         maxWidth="70%"
         boxShadow="sm"
@@ -26,16 +30,18 @@ export const MessageBubble = ({ message, isCurrentUser }: Props) => {
             {message.senderName}
           </Text>
         )}
+
         <Text fontSize="sm" wordBreak="break-word">
           {message.text}
         </Text>
+
         <Text
           fontSize="xs"
+          textAlign={isCurrentUser ? "right" : "left"}
           opacity={0.8}
           mt={1}
-          textAlign={isCurrentUser ? "right" : "left"}
         >
-          {new Date(message.timestamp).toISOString().slice(11, 16)}
+          {formatTime(message.timestamp)}
         </Text>
       </Box>
     </Flex>

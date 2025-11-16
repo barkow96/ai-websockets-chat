@@ -3,7 +3,7 @@ import { ChatProvider } from "@/providers";
 import { ChatRoom, Message, User } from "@/types";
 import { Stack } from "@chakra-ui/react";
 import { MessageControls } from "./MessageControls";
-import { Messages } from "./Messges";
+import { Messages } from "./Messages";
 
 type Props = {
   selectedRoomInitialMessages: Message[];

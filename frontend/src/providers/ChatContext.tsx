@@ -147,7 +147,7 @@ export const ChatProvider = ({
     };
   }, [socket, handleNewMessageReceived]);
 
-  // UseEffect 3: Full AI Moode - generate response for the last message if it's not from the selected user
+  // UseEffect 3: Full AI Mode - generate response for the last message if it's not from the selected user
   useEffect(() => {
     if (!isFullAiModeEnabled || !selectedUser) {
       prevMessagesRef.current = messages;

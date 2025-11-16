@@ -4,12 +4,23 @@ import { gradientAi } from "@/styles";
 import {
   Box,
   Button,
+  ButtonProps,
   HStack,
   Input,
   Spinner,
   Stack,
   chakra,
 } from "@chakra-ui/react";
+
+const aiButtonProps: ButtonProps = {
+  style: { background: gradientAi },
+  fontWeight: "semibold",
+  paddingX: 6,
+  color: "white" as const,
+  _hover: {
+    opacity: 0.9,
+  },
+} as const;
 
 export const MessageControls = () => {
   const {
@@ -69,13 +80,7 @@ export const MessageControls = () => {
             <Button
               onClick={handleGenerateAiResponse}
               disabled={isGeneratingAiResponse}
-              fontWeight="semibold"
-              paddingX={6}
-              style={{ background: gradientAi }}
-              color="white"
-              _hover={{
-                opacity: 0.9,
-              }}
+              {...aiButtonProps}
             >
               {isGeneratingAiResponse ? (
                 <HStack gap={2}>
@@ -86,16 +91,7 @@ export const MessageControls = () => {
               )}
             </Button>
 
-            <Button
-              onClick={toggleFullAiMode}
-              fontWeight="semibold"
-              paddingX={6}
-              style={{ background: gradientAi }}
-              color="white"
-              _hover={{
-                opacity: 0.9,
-              }}
-            >
+            <Button onClick={toggleFullAiMode} {...aiButtonProps}>
               {isFullAiModeEnabled
                 ? "Full AI Mode Enabled"
                 : "Full AI Mode Disabled"}
