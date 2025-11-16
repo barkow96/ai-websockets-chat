@@ -1,5 +1,5 @@
 "use client";
-import { Chat, RoomSelector, Users } from "@/components";
+import { Chat, ChatHeading, RoomSelector, Users } from "@/components";
 import { useSocketIo } from "@/providers";
 import { ChatRoomMessagesService } from "@/services";
 import { ChatRoom, Message, OChatEvent, User } from "@/types";
@@ -35,6 +35,8 @@ export function ChatView({ users, chatRooms }: Props) {
 
   return (
     <VStack gap={0} align="stretch">
+      <ChatHeading />
+
       <Users
         users={users}
         selectedUser={selectedUser}
