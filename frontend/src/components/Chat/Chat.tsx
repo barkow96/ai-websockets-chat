@@ -9,50 +9,67 @@ import {
   User,
 } from "@/types";
 import { Box } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChatContainer } from "./ChatContainer";
 import { ChatEmptyState } from "./ChatEmptyState";
 import { MessageControls } from "./MessageControls";
 import { MessagesList } from "./MessagesList";
 
 type Props = {
-  selectedRoomMessages: Message[];
+  selectedRoomInitialMessages: Message[];
   selectedUser: User | null;
   selectedRoom: ChatRoom | null;
   isAiEnabled: boolean;
 };
 
 export const Chat = ({
-  selectedRoomMessages,
+  selectedRoomInitialMessages,
   selectedUser,
   selectedRoom,
   isAiEnabled,
 }: Props) => {
   const [messageText, setMessageText] = useState("");
-  const [messages, setMessages] = useState<Message[]>(selectedRoomMessages);
+  const [messages, setMessages] = useState<Message[]>(
+    selectedRoomInitialMessages
+  );
   const { socket } = useSocketIo();
+  const [isFullAiModeEnabled, setIsFullAiModeEnabled] = useState(false);
   const [isGeneratingAiResponse, setIsGeneratingAiResponse] = useState(false);
+  const prevMessagesRef = useRef<Message[]>(messages);
 
-  const showMessages = selectedRoom && selectedUser;
+  const toggleFullAiMode = useCallback(
+    () => setIsFullAiModeEnabled(prev => !prev),
+    []
+  );
 
-  const handleSendMessage = () => {
-    if (
-      messageText.trim().length === 0 ||
-      !selectedRoom ||
-      !selectedUser ||
-      selectedRoom?.id.length === 0
-    ) {
-      return;
-    }
+  const showMessages = useMemo(
+    () => selectedRoom && selectedUser,
+    [selectedRoom, selectedUser]
+  );
 
-    socket?.emit(OChatEvent.MessageNew, {
-      chatRoomId: selectedRoom.id,
-      message: messageText.trim(),
-      senderId: selectedUser.id,
-      timestamp: new Date(),
-    });
-    setMessageText("");
-  };
+  const handleSendMessage = useCallback(
+    (text?: string) => {
+      const textToBeSent = text ?? messageText;
+
+      if (
+        textToBeSent.trim().length === 0 ||
+        !selectedRoom ||
+        !selectedUser ||
+        selectedRoom?.id.length === 0
+      ) {
+        return;
+      }
+
+      socket?.emit(OChatEvent.MessageNew, {
+        chatRoomId: selectedRoom.id,
+        message: textToBeSent.trim(),
+        senderId: selectedUser.id,
+        timestamp: new Date(),
+      });
+      setMessageText("");
+    },
+    [messageText, selectedRoom, selectedUser, socket]
+  );
 
   const handleNewMessage = useCallback(
     (data: ChatMessageReceiveEventsData) => {
@@ -73,7 +90,7 @@ export const Chat = ({
   );
 
   const generateResponse = useCallback(async () => {
-    if (!selectedUser) return;
+    if (!selectedUser) return null;
 
     setIsGeneratingAiResponse(true);
 
@@ -84,18 +101,17 @@ export const Chat = ({
 
     setIsGeneratingAiResponse(false);
 
-    if (!aiMessageResponse) return;
-    setMessageText(aiMessageResponse.message);
+    if (!aiMessageResponse) return null;
+    return aiMessageResponse.message;
   }, [messages, selectedUser]);
 
-  useEffect(() => {
-    setMessages(selectedRoomMessages);
-  }, [selectedRoomMessages]);
-
+  // UseEffect 1: react on changes of user, chat room or initial messages
   useEffect(() => {
     if (!selectedRoom || !selectedUser) setMessages([]);
-  }, [selectedRoom, selectedUser]);
+    else setMessages(selectedRoomInitialMessages);
+  }, [selectedRoom, selectedUser, selectedRoomInitialMessages]);
 
+  // UseEffect 2: listen for new messages in the current chat room
   useEffect(() => {
     if (!socket) return;
 
@@ -107,6 +123,42 @@ export const Chat = ({
       socket.off(OChatEvent.MessageNew);
     };
   }, [socket, handleNewMessage]);
+
+  // UseEffect 3: Full AI Moode - generate response for the last message if it's not from the selected user
+  useEffect(() => {
+    if (!isFullAiModeEnabled || !selectedUser) {
+      prevMessagesRef.current = messages;
+      return;
+    }
+
+    const messagesChanged =
+      prevMessagesRef.current.length !== messages.length ||
+      prevMessagesRef.current.some(
+        (msg, index) => msg.id !== messages[index]?.id
+      );
+
+    if (!messagesChanged) {
+      prevMessagesRef.current = messages;
+      return;
+    }
+
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage || lastMessage.senderId === selectedUser.id) {
+      prevMessagesRef.current = messages;
+      return;
+    }
+
+    generateResponse().then(responseText => {
+      if (responseText) handleSendMessage(responseText);
+      prevMessagesRef.current = messages;
+    });
+  }, [
+    isFullAiModeEnabled,
+    messages,
+    selectedUser,
+    generateResponse,
+    handleSendMessage,
+  ]);
 
   return (
     <Box
@@ -122,11 +174,9 @@ export const Chat = ({
       boxShadow="lg"
     >
       <ChatContainer>
-        {showMessages && (
+        {showMessages ? (
           <MessagesList messages={messages} selectedUser={selectedUser} />
-        )}
-
-        {!showMessages && (
+        ) : (
           <ChatEmptyState
             selectedUser={selectedUser}
             selectedRoom={selectedRoom}
@@ -140,8 +190,13 @@ export const Chat = ({
           onMessageTextChange={setMessageText}
           onSend={handleSendMessage}
           isAiEnabled={isAiEnabled}
-          onGenerateAiResponse={generateResponse}
+          onGenerateAiResponse={async () => {
+            const response = await generateResponse();
+            if (response) setMessageText(response);
+          }}
           isGeneratingAiResponse={isGeneratingAiResponse}
+          onToggleFullAiMode={toggleFullAiMode}
+          isFullAiModeEnabled={isFullAiModeEnabled}
         />
       )}
     </Box>

@@ -13,10 +13,12 @@ import {
 type Props = {
   messageText: string;
   onMessageTextChange: (value: string) => void;
-  onSend: () => void;
+  onSend: (text?: string) => void;
   isAiEnabled: boolean;
   onGenerateAiResponse: () => void;
   isGeneratingAiResponse: boolean;
+  onToggleFullAiMode: () => void;
+  isFullAiModeEnabled: boolean;
 };
 
 export const MessageControls = ({
@@ -26,6 +28,8 @@ export const MessageControls = ({
   isAiEnabled,
   onGenerateAiResponse,
   isGeneratingAiResponse,
+  onToggleFullAiMode,
+  isFullAiModeEnabled,
 }: Props) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -51,7 +55,7 @@ export const MessageControls = ({
         />
 
         <Button
-          onClick={onSend}
+          onClick={() => onSend()}
           disabled={!messageText.trim()}
           fontWeight="semibold"
           paddingX={6}
@@ -81,8 +85,8 @@ export const MessageControls = ({
               )}
             </Button>
 
-            {/* TODO: Implement full AI mode (automatic response generation for all messages) */}
             <Button
+              onClick={onToggleFullAiMode}
               fontWeight="semibold"
               paddingX={6}
               style={{ background: gradientAi }}
@@ -91,7 +95,9 @@ export const MessageControls = ({
                 opacity: 0.9,
               }}
             >
-              Enable Full AI Mode
+              {isFullAiModeEnabled
+                ? "Full AI Mode Enabled"
+                : "Full AI Mode Disabled"}
             </Button>
           </>
         )}

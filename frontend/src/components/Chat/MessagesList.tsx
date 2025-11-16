@@ -5,7 +5,7 @@ import { MessageBubble } from "./MessageBubble";
 
 type Props = {
   messages: Message[];
-  selectedUser: User;
+  selectedUser: User | null;
 };
 
 export const MessagesList = ({ messages, selectedUser }: Props) => {
@@ -22,7 +22,7 @@ export const MessagesList = ({ messages, selectedUser }: Props) => {
   return (
     <VStack gap={3} align="stretch">
       {messages.map(message => {
-        const isCurrentUser = message.senderId === selectedUser.id;
+        const isCurrentUser = message.senderId === selectedUser?.id;
         return (
           <MessageBubble
             key={message.id}

@@ -16,9 +16,8 @@ export function ChatView({ users, chatRooms }: Props) {
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
-  const [selectedRoomMessages, setSelectedRoomMessages] = useState<Message[]>(
-    []
-  );
+  const [selectedRoomInitialMessages, setSelectedRoomInitialMessages] =
+    useState<Message[]>([]);
   const [isAiEnabled, setIsAiEnabled] = useState(false);
 
   const handleRoomSelect = useCallback(
@@ -29,7 +28,7 @@ export function ChatView({ users, chatRooms }: Props) {
       const messages = await ChatRoomMessagesService.getChatRoomMessages(
         room.id
       );
-      setSelectedRoomMessages(messages);
+      setSelectedRoomInitialMessages(messages);
     },
     [socket]
   );
@@ -51,7 +50,7 @@ export function ChatView({ users, chatRooms }: Props) {
       />
 
       <Chat
-        selectedRoomMessages={selectedRoomMessages}
+        selectedRoomInitialMessages={selectedRoomInitialMessages}
         selectedUser={selectedUser}
         selectedRoom={selectedRoom}
         isAiEnabled={isAiEnabled}
