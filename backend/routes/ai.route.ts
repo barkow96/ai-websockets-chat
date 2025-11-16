@@ -6,7 +6,7 @@ const router = express.Router();
 
 const openai = new OpenAI({
 	baseURL: "https://openrouter.ai/api/v1",
-	apiKey: process.env.OPEN_AI_LLM_API_KEY,
+	apiKey: process.env.OPEN_ROUTER_AI_LLM_API_KEY,
 });
 
 router.post("/generate-response", async (req, res) => {
