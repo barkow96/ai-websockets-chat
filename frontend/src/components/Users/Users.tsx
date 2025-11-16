@@ -10,7 +10,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { AiToggle } from "./AiToggle";
+import { AiToggleSwitch } from "./AiToggleSwitch";
 import { UsersList } from "./UsersList";
 
 const USERS_ACCORDION_ITEM_VALUE = "users";
@@ -61,8 +61,12 @@ export const Users = ({
                 ? `Logged in as: ${selectedUser.name}`
                 : "Select a user"}
             </Heading>
+
             {selectedUser && (
-              <AiToggle isAiEnabled={isAiEnabled} onAiToggle={onAiToggle} />
+              <AiToggleSwitch
+                isAiEnabled={isAiEnabled}
+                onAiToggle={onAiToggle}
+              />
             )}
             <AccordionItemIndicator />
           </AccordionItemTrigger>

@@ -1,6 +1,6 @@
 "use client";
 import { User } from "@/types";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Stack, Text } from "@chakra-ui/react";
 
 type Props = {
   user: User;
@@ -11,35 +11,36 @@ type Props = {
 export const UserCardButton = ({ user, isSelected, onSelect }: Props) => {
   return (
     <Button
+      onClick={() => onSelect(user)}
       variant={isSelected ? "solid" : "outline"}
       colorScheme={isSelected ? "blue" : "gray"}
-      onClick={() => onSelect(user)}
-      padding={4}
       height="auto"
       minH="80px"
+      padding={4}
     >
-      <Flex direction="column" align="center" gap={2}>
-        <Box
-          w="48px"
-          h="48px"
+      <Stack align="center" gap={2}>
+        <Stack
+          align="center"
+          justify="center"
+          width="48px"
+          height="48px"
           borderRadius="full"
-          bg="blue.500"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
+          background="blue.500"
           color="white"
           fontSize="lg"
           fontWeight="bold"
         >
           {user.name.charAt(0).toUpperCase()}
-        </Box>
+        </Stack>
+
         <Text fontSize="sm" fontWeight="medium">
           {user.name}
         </Text>
+
         <Text fontSize="xs" color="gray.500">
           ID: {user.id}
         </Text>
-      </Flex>
+      </Stack>
     </Button>
   );
 };

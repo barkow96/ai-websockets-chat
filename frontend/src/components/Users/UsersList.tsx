@@ -11,7 +11,7 @@ type Props = {
 
 export const UsersList = ({ users, selectedUser, onUserSelect }: Props) => {
   return (
-    <VStack gap={4} align="stretch" p={4}>
+    <VStack gap={4} align="stretch" padding={4}>
       <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap={3}>
         {users.map(user => (
           <UserCardButton
