@@ -7,8 +7,8 @@ type Props = {
   selectedRoom: ChatRoom | null;
 };
 
-export const ChatEmptyState = ({ selectedUser, selectedRoom }: Props) => {
-  const getMessage = () => {
+export const MessagesEmpty = ({ selectedUser, selectedRoom }: Props) => {
+  const getInformationText = () => {
     if (!selectedUser && !selectedRoom) {
       return "Select a user and chat room to start the conversation";
     }
@@ -26,9 +26,8 @@ export const ChatEmptyState = ({ selectedUser, selectedRoom }: Props) => {
       height="100%"
     >
       <Text color="gray.400" fontSize="md" fontWeight="medium">
-        {getMessage()}
+        {getInformationText()}
       </Text>
     </Box>
   );
 };
-

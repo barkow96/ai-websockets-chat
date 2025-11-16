@@ -6,13 +6,13 @@ type Props = {
   children: ReactNode;
 };
 
-export const ChatContainer = ({ children }: Props) => {
+export const MessagesContainer = ({ children }: Props) => {
   return (
     <Box
       flex="1"
+      padding={4}
+      background="white"
       overflowY="auto"
-      p={4}
-      bg="white"
       css={{
         "&::-webkit-scrollbar": {
           width: "8px",
@@ -33,4 +33,3 @@ export const ChatContainer = ({ children }: Props) => {
     </Box>
   );
 };
-

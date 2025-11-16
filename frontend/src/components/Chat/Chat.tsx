@@ -10,10 +10,10 @@ import {
 } from "@/types";
 import { Box } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ChatContainer } from "./ChatContainer";
-import { ChatEmptyState } from "./ChatEmptyState";
 import { MessageControls } from "./MessageControls";
+import { MessagesEmpty } from "./MessagesEmpty";
 import { MessagesList } from "./MessagesList";
+import { MessagesContainer } from "./MessgesContainer";
 
 type Props = {
   selectedRoomInitialMessages: Message[];
@@ -173,16 +173,16 @@ export const Chat = ({
       bg="gray.50"
       boxShadow="lg"
     >
-      <ChatContainer>
+      <MessagesContainer>
         {showMessages ? (
           <MessagesList messages={messages} selectedUser={selectedUser} />
         ) : (
-          <ChatEmptyState
+          <MessagesEmpty
             selectedUser={selectedUser}
             selectedRoom={selectedRoom}
           />
         )}
-      </ChatContainer>
+      </MessagesContainer>
 
       {showMessages && (
         <MessageControls

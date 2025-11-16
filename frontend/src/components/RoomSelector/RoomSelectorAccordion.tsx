@@ -33,9 +33,9 @@ export const RoomSelectorAccordion = ({
   return (
     <Box borderBottom="2px" borderColor="gray.300">
       <AccordionRoot
-        collapsible
         value={openAccordionItems}
         onValueChange={({ value }) => onAccordionChange(value)}
+        collapsible
       >
         <AccordionItem value={ROOMS_ACCORDION_ITEM_VALUE}>
           <AccordionItemTrigger

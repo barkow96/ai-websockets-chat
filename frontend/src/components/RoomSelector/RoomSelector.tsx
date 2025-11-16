@@ -24,27 +24,25 @@ export const RoomSelector = ({ rooms, selectedRoom, onRoomSelect }: Props) => {
     ROOMS_ACCORDION_ITEM_VALUE,
   ]);
 
-  useEffect(() => {
-    if (selectedRoom) setOpenAccordionItems([]);
-  }, [selectedRoom]);
-
   const handleCreateRoom = async () => {
     if (!newRoomName.trim()) return;
 
-    try {
-      const newRoom = await ChatRoomsService.createChatRoom({
-        name: newRoomName,
-        description: newRoomDescription,
-      });
+    const createdChatRoom = await ChatRoomsService.createChatRoom({
+      name: newRoomName,
+      description: newRoomDescription,
+    });
 
-      setChatRooms(prev => [...prev, newRoom]);
-      setNewRoomName("");
-      setNewRoomDescription("");
-      onClose();
-    } catch (error) {
-      console.error("Failed to create chat room:", error);
-    }
+    if (!createdChatRoom) return;
+
+    setChatRooms(prev => [...prev, createdChatRoom]);
+    setNewRoomName("");
+    setNewRoomDescription("");
+    onClose();
   };
+
+  useEffect(() => {
+    if (selectedRoom) setOpenAccordionItems([]);
+  }, [selectedRoom]);
 
   return (
     <>
