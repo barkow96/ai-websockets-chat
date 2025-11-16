@@ -1,4 +1,4 @@
-import { MessageDto } from "./database/types/messages";
+import { MessageDto } from "../database/types/messages";
 
 export const OChatEvent = {
 	Watch: "chat-watch",

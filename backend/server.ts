@@ -1,12 +1,12 @@
-import "dotenv-flow/config";
 import bodyParser from "body-parser";
 import cors from "cors";
+import "dotenv-flow/config";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { ChatMessageReceiveEventsData, ChatMessageSendEventsData, ChatWatchEventsData, OChatEvent } from "./chatEvent.type.ts";
 import { createMessage } from "./database/index.ts";
 import { aiRouter, chatRoomMessagesRouter, chatRoomsRouter, usersRouter } from "./routes";
+import { ChatMessageReceiveEventsData, ChatMessageSendEventsData, ChatWatchEventsData, OChatEvent } from "./types";
 
 const port = process.env.PORT;
 const client1Url = `http://localhost:${process.env.CLIENT_1_PORT}`;
